@@ -1,5 +1,10 @@
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.contrib.auth.models import (
+    AbstractBaseUser,
+    BaseUserManager,
+    PermissionsMixin,
+)
 from django.db import models
+
 
 class UserManager(BaseUserManager):
     def create_user(self, username, password=None, role=None, enabled=True):
@@ -11,7 +16,10 @@ class UserManager(BaseUserManager):
         return user
 
     def create_superuser(self, username, password=None):
-        return self.create_user(username=username, password=password, role='admin', enabled=True)
+        return self.create_user(
+            username=username, password=password, role="admin", enabled=True
+        )
+
 
 class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=150, unique=True)
@@ -20,8 +28,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     objects = UserManager()
 
-    USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['role']
+    USERNAME_FIELD = "username"
+    # REQUIRED_FIELDS = ['role']
 
     def __str__(self):
         return self.username
