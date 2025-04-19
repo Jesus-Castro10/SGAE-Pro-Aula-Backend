@@ -2,14 +2,14 @@ from pathlib import Path
 from datetime import timedelta
 from os import environ
 import os
+from decouple import config
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = "django-insecure-pumuwh4r4h@_-8ka!ekcw4-g-4ddf!1+&=&k3+q#qu64p-w_2k311217"
+SECRET_KEY = config('SECRET_KEY')
+DEBUG = config('DEBUG', cast=bool)
 
-DEBUG = True
-
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition

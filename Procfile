@@ -1,0 +1,1 @@
+web: gunicorn sgae_project.wsgi
