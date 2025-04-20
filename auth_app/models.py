@@ -33,3 +33,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.username
+
+    @property
+    def is_active(self):
+        return self.enabled
