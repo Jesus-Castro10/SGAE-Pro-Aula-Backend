@@ -1,8 +1,8 @@
 from pathlib import Path
 from datetime import timedelta
-from os import environ
 import os
 from decouple import config
+import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -75,23 +75,20 @@ WSGI_APPLICATION = "sgae_project.wsgi.application"
 
 AUTH_USER_MODEL = "auth_app.User"
 
-# Database
-# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
+IS_PRODUCTION = os.getenv('RENDER', None) is not None
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME'),
-        'USER': os.getenv('DB_USER'),
-        'PASSWORD': os.getenv('DB_PASSWORD'),
-        'HOST': os.getenv('DB_HOST'),
-        'PORT': os.getenv('DB_PORT', '5432'),
+if IS_PRODUCTION:
+    DATABASES = {
+        'default': dj_database_url.config(default=os.getenv('DATABASE_URL'))
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / "db.sqlite3",
+        }
+    }
 
-
-# Password validation
-# https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -109,9 +106,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/5.2/topics/i18n/
-
 LANGUAGE_CODE = "en-us"
 
 TIME_ZONE = "UTC"
@@ -122,8 +116,6 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.2/howto/static-files/
-
 STATIC_URL = "static/"
 STATIC_DIR = os.path.join(BASE_DIR, "static")
 STATICFILES_DIRS = [
