@@ -21,12 +21,29 @@ class StudentView(APIView):
 
     def post(self, request):
         data = request.data
-        first_name = data['first_name']
-        last_name = data['last_name']
-        email = data['email']
+        first_name = data.get('first_name')
+        second_name = data.get('second_name')
+        first_lastname = data.get('first_lastname')
+        second_lastname = data.get('second_lastname')
+        id_card = data.get('id_card')
+        birth_date = data.get('birth_date')
+        place_of_birth = data.get('place_of_birth')
+        address = data.get('address')
+        phone = data.get('phone')
+        email = data.get('email')
 
-        student = self.student_service.create_student(first_name, last_name, email)
-
+        student = self.student_service.create_student(
+            first_name=first_name,
+            second_name=second_name,
+            first_lastname=first_lastname,
+            second_lastname=second_lastname,
+            id_card=id_card,
+            birth_date=birth_date,
+            place_of_birth=place_of_birth,
+            address=address,
+            phone=phone,
+            email=email
+        )
         return Response(StudentDTO(student).to_dict(), status=status.HTTP_201_CREATED)
 
     def get(self, request):

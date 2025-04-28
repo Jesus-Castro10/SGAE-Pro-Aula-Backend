@@ -7,11 +7,35 @@ class CreateStudent:
     def __init__(self, repository: StudentRepository):
         self.repository = repository
 
-    def execute(self, first_name: str, last_name: str, email: str) -> Student:
+    def execute(
+        self,
+        first_name: str,
+        first_lastname: str,
+        id_card: str,
+        birth_date: str,
+        place_of_birth: str,
+        address: str,
+        phone: str,
+        email: str,
+        second_name: str = None,
+        second_lastname: str = None
+    ) -> Student:
         if self.repository.exists(email):
             raise StudentAlreadyExistsException(f"Student with email {email} already exists.")
 
-        student = Student(id=None, first_name=first_name, last_name=last_name, email=email)
+        student = Student(
+            first_name=first_name,
+            second_name=second_name,
+            first_lastname=first_lastname,
+            second_lastname=second_lastname,
+            id_card=id_card,
+            birth_date=birth_date,
+            place_of_birth=place_of_birth,
+            address=address,
+            phone=phone,
+            email=email
+        )
+        
         self.repository.save(student)
         return student
 
