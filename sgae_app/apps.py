@@ -5,5 +5,12 @@ class SgaeAppConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'sgae_app'
 
+
     def ready(self):
-        import sgae_app.infrastructure.models.student
+        from sgae_app.infrastructure.config.container import Container
+        from sgae_project import settings
+    
+        global container
+        container = Container()
+        container.config.from_dict(settings.__dict__)
+        container.wire(modules=[".interfaces.api.student_view"])
