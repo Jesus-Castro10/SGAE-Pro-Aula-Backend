@@ -1,5 +1,5 @@
 from sgae_app.domain.use_cases.student import CreateStudent, UpdateStudent, DeleteStudent, GetStudent
-
+from sgae_app.domain.entities.student import Student
 
 class StudentService:
     def __init__(self,
@@ -12,18 +12,9 @@ class StudentService:
         self.delete_student_uc = delete_student_uc
         self.get_student_uc = get_student_uc
 
-    def create_student(self, first_name, second_name, first_lastname, second_lastname, id_card, birthdate, place_of_birth, address, phone, email):
+    def create_student(self, student: Student):
         return self.create_student_uc.execute(
-            first_name=first_name,
-            second_name=second_name,
-            first_lastname=first_lastname,
-            second_lastname=second_lastname,
-            id_card=id_card,
-            birthdate=birthdate,
-            place_of_birth=place_of_birth,
-            address=address,
-            phone=phone,
-            email=email
+            student
         )
 
     def update_student(self, student_id, first_name, last_name, email):

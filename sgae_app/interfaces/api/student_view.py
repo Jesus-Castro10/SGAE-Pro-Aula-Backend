@@ -4,6 +4,7 @@ from rest_framework import status
 
 from sgae_app.application.services.student_service import StudentService
 from sgae_app.interfaces.dtos.student_dto import StudentDTO
+from sgae_app.domain.entities.student import Student
 
 from dependency_injector.wiring import Provide
 from sgae_app.infrastructure.config.container import Container
@@ -19,11 +20,13 @@ class StudentView(APIView):
     def post(self, request):
         data = StudentDTO(request.data)
         # data.is_valid(raise_exception=True)
-        serialized_data = data.data
-        student = self.student_service.create_student(
-            **serialized_data
+        serialized = data.data
+        student = Student(**serialized, user = None)
+        
+        studentSaved = self.student_service.create_student(
+            student
         )
-        return Response(serialized_data, status=status.HTTP_201_CREATED)
+        return Response(studentSaved, status=status.HTTP_201_CREATED)
 
     def get(self, request):
         student = self.student_service.get_student(student_id=1)
