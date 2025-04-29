@@ -8,7 +8,6 @@ class DjangoStudentRepository(StudentRepository):
     def save(self, student: Student) -> Student:
         model = StudentModel.from_domain(student)
         model.save()
-        student.id = model.id
         return student
 
     def get_by_id(self, student_id: int) -> Any | None:

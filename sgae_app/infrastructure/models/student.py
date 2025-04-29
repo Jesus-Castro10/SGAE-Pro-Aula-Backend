@@ -12,11 +12,17 @@ class StudentModel(Person):
     )
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name} ({self.email})"
+        return f"{self.first_name} {self.first_lastname} ({self.email})"
 
     def to_domain(self):
-        return Student(id=self.id, first_name=self.first_name, last_name=self.last_name, email=self.email)
+        return Student(first_name=self.first_name,second_name=self.second_name,
+                        first_lastname=self.first_lastname,second_lastname=self.second_lastname, 
+                        id_card=self.id_card, birthdate=self.birthdate, place_of_birth=self.place_of_birth,
+                        address=self.address, phone=self.phone, email=self.email)
 
     @classmethod
     def from_domain(cls, student: Student):
-        return cls(id=student.id, first_name=student.first_name, last_name=student.last_name, email=student.email)
+        return cls(id_card=student.id_card,first_name=student.first_name,second_name=student.second_name, 
+                   first_lastname=student.first_lastname,second_lastname= student.second_lastname, 
+                   email=student.email, birthdate=student.birthdate,
+                   place_of_birth=student.place_of_birth, address=student.address, phone=student.phone, user = student.user)

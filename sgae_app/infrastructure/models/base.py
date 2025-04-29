@@ -28,7 +28,7 @@ class Person(models.Model):
         unique=True,
         validators=[MinLengthValidator(5)],
     )
-    birth_date = models.DateField(
+    birthdate = models.DateField(
         'fecha de nacimiento',
     )
     place_of_birth = models.CharField(
@@ -57,7 +57,7 @@ class Person(models.Model):
         ordering = ['first_lastname', 'first_name']
         constraints = [
             models.UniqueConstraint(
-                fields=['first_name', 'first_lastname', 'birth_date'],
+                fields=['first_name', 'first_lastname', 'birthdate'],
                 name='unique_person'
             )
         ]

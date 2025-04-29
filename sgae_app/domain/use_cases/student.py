@@ -1,7 +1,7 @@
 from sgae_app.domain.entities.student import Student
 from sgae_app.domain.repositories.student_repository import StudentRepository
 from sgae_app.domain.exceptions.student import StudentAlreadyExistsException, StudentNotFoundException
-
+from auth_app.models import User
 
 class CreateStudent:
     def __init__(self, repository: StudentRepository):
@@ -12,7 +12,7 @@ class CreateStudent:
         first_name: str,
         first_lastname: str,
         id_card: str,
-        birth_date: str,
+        birthdate: str,
         place_of_birth: str,
         address: str,
         phone: str,
@@ -23,17 +23,27 @@ class CreateStudent:
         if self.repository.exists(email):
             raise StudentAlreadyExistsException(f"Student with email {email} already exists.")
 
+        username = email
+        password = id_card
+        
+        user = User.objects.create(
+            username=username,
+            password=password,
+            user_type='student'
+        )
+        
         student = Student(
             first_name=first_name,
             second_name=second_name,
             first_lastname=first_lastname,
             second_lastname=second_lastname,
             id_card=id_card,
-            birth_date=birth_date,
+            birthdate=birthdate,
             place_of_birth=place_of_birth,
             address=address,
             phone=phone,
-            email=email
+            email=email,
+            user=user 
         )
         
         self.repository.save(student)
@@ -60,7 +70,7 @@ class UpdateStudent:
             raise StudentNotFoundException(f"Student with id {student_id} not found.")
 
         student.first_name = first_name
-        student.last_name = last_name
+        student.first_lastname = last_name
         student.email = email
         self.repository.save(student)
         return student
