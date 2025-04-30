@@ -33,6 +33,7 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
     ],
+    "EXCEPTION_HANDLER": "sgae_app.interfaces.api.exception_view.custom_exception_handler",
 }
 
 SIMPLE_JWT = {
@@ -47,6 +48,7 @@ SIMPLE_JWT = {
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8100",
     "https://jesus-castro10-sgae-pro-aula-backend.onrender.com",
+    "https://sgae-pro-aula-frontend.vercel.app"
 ]
 
 MIDDLEWARE = [

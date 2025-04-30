@@ -22,3 +22,6 @@ class DjangoStudentRepository(StudentRepository):
 
     def delete(self, student_id: int) -> None:
         StudentModel.objects.filter(id=student_id).delete()
+        
+    def get_all(self) -> list[Student]:
+        return [model.to_domain() for model in StudentModel.objects.all()]

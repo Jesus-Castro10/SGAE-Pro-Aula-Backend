@@ -12,3 +12,6 @@ class StudentRepository:
 
     def delete(self, student_id: int) -> None:
         raise NotImplementedError
+    
+    def get_all(self) -> list[Student]:
+        raise NotImplementedError

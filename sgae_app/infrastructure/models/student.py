@@ -18,7 +18,7 @@ class StudentModel(Person):
         return Student(first_name=self.first_name,second_name=self.second_name,
                         first_lastname=self.first_lastname,second_lastname=self.second_lastname, 
                         id_card=self.id_card, birthdate=self.birthdate, place_of_birth=self.place_of_birth,
-                        address=self.address, phone=self.phone, email=self.email)
+                        address=self.address, phone=self.phone, email=self.email,user=self.user)
 
     @classmethod
     def from_domain(cls, student: Student):

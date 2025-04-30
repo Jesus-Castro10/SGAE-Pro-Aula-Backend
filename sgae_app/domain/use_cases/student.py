@@ -14,7 +14,7 @@ class CreateStudent:
         
         if self.repository.exists(student.email):
             raise StudentAlreadyExistsException(f"Student with email {student.email} already exists.")
-        print(type(student))
+        
         user = User.objects.create(
             username=student.email,
             password=student.id_card,
@@ -63,4 +63,14 @@ class DeleteStudent:
             raise StudentNotFoundException(f"Student with id {student_id} not found.")
 
         self.repository.delete(student_id)
-        return {"message": "Student deleted successfully"}
+        return student
+    
+class GetAllStudents:
+    def __init__(self, repository: StudentRepository):
+        self.repository = repository
+
+    def execute(self):
+        students = self.repository.get_all()
+        if not students:
+            raise StudentNotFoundException("No students found.")
+        return students
