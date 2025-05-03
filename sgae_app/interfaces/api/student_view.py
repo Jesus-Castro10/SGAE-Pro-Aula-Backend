@@ -8,7 +8,6 @@ from sgae_app.domain.entities.student import Student
 
 from dependency_injector.wiring import Provide
 from sgae_app.infrastructure.config.container import Container
-from sgae_app.domain.exceptions.student import StudentNotFoundException
 
 
 class StudentView(APIView):
@@ -24,9 +23,8 @@ class StudentView(APIView):
         # data.is_valid(raise_exception=True)
         serialized = data.data
         student = Student(**serialized, user = None)
-        
         studentSaved = self.student_service.create_student(student)
-        return Response(studentSaved, status=status.HTTP_201_CREATED)
+        return Response(StudentDTO(studentSaved).data, status=status.HTTP_201_CREATED)
 
     def get(self, request, student_id=None):
         if student_id:

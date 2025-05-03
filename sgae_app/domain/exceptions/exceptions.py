@@ -12,3 +12,8 @@ class ResourceNotFoundException(DomainException):
     def __init__(self, message="Recurso no encontrado"):
         super().__init__(message)
         self.message = message
+
+class UserWithEmailAlreadyExistsException(DomainException):
+    def __init__(self, message="Usuario con este email ya existe existente"):
+        super().__init__(message)
+        self.message = message

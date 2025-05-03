@@ -1,7 +1,11 @@
 from sgae_app.domain.entities.student import Student
 from sgae_app.domain.repositories.student_repository import StudentRepository
-from sgae_app.domain.exceptions.student import StudentAlreadyExistsException, StudentNotFoundException
+from sgae_app.domain.exceptions.student_exceptions import StudentAlreadyExistsException, StudentNotFoundException
 from auth_app.models import User
+
+import logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 class CreateStudent:
     def __init__(self, repository: StudentRepository):
@@ -11,7 +15,7 @@ class CreateStudent:
         self,
         student: Student
     ) -> Student:
-        
+        logger.info("model: %s", student)
         if self.repository.exists(student.email):
             raise StudentAlreadyExistsException(f"Student with email {student.email} already exists.")
         
@@ -22,7 +26,7 @@ class CreateStudent:
         )
 
         student.user = user
-        
+        logger.info("model before saved: %s", student)
         self.repository.save(student)
         return student
 

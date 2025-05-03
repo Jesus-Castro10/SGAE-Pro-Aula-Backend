@@ -14,3 +14,4 @@ class SgaeAppConfig(AppConfig):
         container = Container()
         container.config.from_dict(settings.__dict__)
         container.wire(modules=[".interfaces.api.student_view"])
+        container.wire(modules=[".interfaces.api.secretary_view"])

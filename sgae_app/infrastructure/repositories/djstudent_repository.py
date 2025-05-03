@@ -4,9 +4,14 @@ from sgae_app.domain.entities.student import Student
 from sgae_app.domain.repositories.student_repository import StudentRepository
 from sgae_app.infrastructure.models.student import StudentModel
 
+import logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 class DjangoStudentRepository(StudentRepository):
     def save(self, student: Student) -> Student:
         model = StudentModel.from_domain(student)
+        logger.info(f"Student {model}")
         model.save()
         return student
 

@@ -1,5 +1,5 @@
 from sgae_app.interfaces.dtos.base import PersonDTO
 
 
-class StudentDTO(PersonDTO):
+class SecretaryDTO(PersonDTO):
     pass
