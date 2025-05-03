@@ -1,7 +1,7 @@
 from dependency_injector import containers, providers
 from sgae_app.infrastructure.repositories.djstudent_repository import DjangoStudentRepository
 from sgae_app.application.services.student_service import StudentService
-from sgae_app.domain.use_cases.student import *
+from sgae_app.application.use_cases.student import *
 
 
 class Container(containers.DeclarativeContainer):

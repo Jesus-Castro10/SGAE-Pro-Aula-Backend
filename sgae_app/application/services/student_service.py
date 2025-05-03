@@ -1,4 +1,4 @@
-from sgae_app.domain.use_cases.student import *
+from sgae_app.application.use_cases.student import *
 from sgae_app.domain.entities.student import Student
 
 class StudentService:
