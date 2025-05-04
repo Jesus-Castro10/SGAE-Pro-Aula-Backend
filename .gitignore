@@ -10,9 +10,8 @@ static/
 
 
 # Django Migrations
-**/migrations/
-**/migrations/*.py
-!**/migrations/__init__.py
+*/migrations/*.py
+!*/migrations/__init__.py
 
 # Backup files # 
 *.bak 
