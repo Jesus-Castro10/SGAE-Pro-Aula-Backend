@@ -1,4 +1,4 @@
-from sgae_app.domain.exceptions.exceptions import UserWithEmailAlreadyExistsException, ResourceNotFoundException
+from sgae_app.domain.exceptions.exceptions import UserAlreadyExistsException, ResourceNotFoundException
 from sgae_app.domain.repositories.director_repository import DirectorRepository
 from sgae_app.domain.entities.director import Director
 from auth_app.models import User
@@ -9,7 +9,7 @@ class CreateDirector:
 
     def execute(self, director: Director) -> Director:
         if self.repository.exists(director.email):
-            raise UserWithEmailAlreadyExistsException(f"Director with email {director.email} already exists.")
+            raise UserAlreadyExistsException(f"Director with email {director.email} already exists.")
 
         user = User.objects.create(
             username=director.email,

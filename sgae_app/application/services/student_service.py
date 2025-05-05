@@ -22,8 +22,8 @@ class StudentService:
     def create_student(self, student: Student):
         return self.create_student_uc.execute(student)
 
-    def update_student(self, student_id, first_name, last_name, email):
-        return self.update_student_uc.execute(student_id, first_name, last_name, email)
+    def update_student(self, student_id, student: Student):
+        return self.update_student_uc.execute(student_id, student)
 
     def delete_student(self, student_id):
         return self.delete_student_uc.execute(student_id)

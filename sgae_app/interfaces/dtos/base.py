@@ -1,5 +1,5 @@
 from rest_framework import serializers
-
+from sgae_app.domain.exceptions.exceptions import InvalidDataException
 
 class PersonDTO(serializers.Serializer):
     id_card = serializers.CharField(
@@ -38,3 +38,4 @@ class PersonDTO(serializers.Serializer):
     )
 
     email = serializers.EmailField()
+    

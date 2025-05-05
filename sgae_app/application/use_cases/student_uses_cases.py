@@ -1,11 +1,9 @@
 from sgae_app.domain.entities.student import Student
 from sgae_app.domain.repositories.student_repository import StudentRepository
-from sgae_app.domain.exceptions.student_exceptions import StudentAlreadyExistsException, StudentNotFoundException
 from auth_app.models import User
 
-import logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+from sgae_app.domain.exceptions.exceptions import (DuplicateKeyException,
+    ResourceNotFoundException, UserAlreadyExistsException)
 
 class CreateStudent:
     def __init__(self, repository: StudentRepository):
@@ -15,19 +13,21 @@ class CreateStudent:
         self,
         student: Student
     ) -> Student:
-        logger.info("model: %s", student)
-        if self.repository.exists(student.email):
-            raise StudentAlreadyExistsException(f"Student with email {student.email} already exists.")
+        if self.repository.exists(student):
+            raise UserAlreadyExistsException(f"Student already exists check the id card or email.")
         
-        user = User.objects.create(
-            username=student.email,
-            password=student.id_card,
-            user_type='student'
-        )
-
-        student.user = user
-        logger.info("model before saved: %s", student)
-        self.repository.save(student)
+        try:
+            user = User.objects.create(
+                username=student.email,
+                user_type='student'
+            ) #Create service to create user
+            user.set_password(student.id_card)
+            user.save()
+            student.user = user
+            self.repository.save(student)
+        except Exception as e:
+            user.delete()
+            raise DuplicateKeyException(errors={str(e)})
         return student
 
 class GetStudent:
@@ -37,7 +37,7 @@ class GetStudent:
     def execute(self, student_id: int):
         student = self.repository.get_by_id(student_id)
         if not student:
-            raise StudentNotFoundException(f"Student with id {student_id} not found.")
+            raise ResourceNotFoundException(f"Student with id {student_id} not found.")
         return student
 
 
@@ -45,14 +45,11 @@ class UpdateStudent:
     def __init__(self, repository: StudentRepository):
         self.repository = repository
 
-    def execute(self, student_id: int, first_name: str, last_name: str, email: str):
-        student = self.repository.get_by_id(student_id)
-        if not student:
-            raise StudentNotFoundException(f"Student with id {student_id} not found.")
-
-        student.first_name = first_name
-        student.first_lastname = last_name
-        student.email = email
+    def execute(self, student_id: int, student: Student):
+        student_db = self.repository.get_by_id(student_id)
+        if not student_db:
+            raise ResourceNotFoundException(f"Student with id {student_id} not found.")
+        
         self.repository.save(student)
         return student
 
@@ -64,7 +61,7 @@ class DeleteStudent:
     def execute(self, student_id: int):
         student = self.repository.get_by_id(student_id)
         if not student:
-            raise StudentNotFoundException(f"Student with id {student_id} not found.")
+            raise ResourceNotFoundException(f"Student with id {student_id} not found.")
 
         self.repository.delete(student_id)
         return student
@@ -76,5 +73,5 @@ class GetAllStudents:
     def execute(self):
         students = self.repository.get_all()
         if not students:
-            raise StudentNotFoundException("No students found.")
+            raise ResourceNotFoundException("No students found.")
         return students

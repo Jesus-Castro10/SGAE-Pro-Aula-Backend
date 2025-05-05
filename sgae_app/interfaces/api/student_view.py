@@ -8,6 +8,7 @@ from sgae_app.domain.entities.student import Student
 
 from dependency_injector.wiring import Provide
 from sgae_app.infrastructure.config.container import Container
+from sgae_app.domain.exceptions.exceptions import InvalidDataException
 
 
 class StudentView(APIView):
@@ -19,17 +20,37 @@ class StudentView(APIView):
         self.student_service = student_service
 
     def post(self, request):
-        data = StudentDTO(request.data)
-        # data.is_valid(raise_exception=True)
+        data = StudentDTO(data=request.data)
+        if not data.is_valid():
+            raise InvalidDataException(data.errors)
         serialized = data.data
         student = Student(**serialized, user = None)
         studentSaved = self.student_service.create_student(student)
         return Response(StudentDTO(studentSaved).data, status=status.HTTP_201_CREATED)
 
-    def get(self, request, student_id=None):
-        if student_id:
-            student = self.student_service.get_student(student_id)
+    def get(self, request, pk=None):
+        if pk:
+            student = self.student_service.get_student(pk)
             return Response(StudentDTO(student).data)
         else:
             students = self.student_service.get_all_students()
             return Response(StudentDTO(students, many=True).data)
+        
+    def put(self, request, pk):
+        data = StudentDTO(data=request.data)
+        if not data.is_valid():
+            raise InvalidDataException(data.errors)
+        student = data.data
+        
+        # if not student:
+        #     return Response({"detail": "Estudiante no encontrado"}, status=status.HTTP_404_NOT_FOUND)
+        
+        # for key, value in serialized.items():
+        #     setattr(student, key, value)
+        
+        updated_student = self.student_service.update_student(student)
+        return Response(StudentDTO(updated_student).data, status=status.HTTP_200_OK)
+
+    def delete(self, request, pk):
+        self.student_service.delete_student(pk)
+        return Response("Estudiante eliminado correctamente", status=status.HTTP_204_NO_CONTENT)

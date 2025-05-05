@@ -1,4 +1,4 @@
-from sgae_app.domain.exceptions.exceptions import ResourceNotFoundException, UserWithEmailAlreadyExistsException
+from sgae_app.domain.exceptions.exceptions import ResourceNotFoundException, UserAlreadyExistsException
 from sgae_app.domain.repositories.academic_coordinator_repo import AcademicCoordinatorRepository
 from sgae_app.domain.entities.academic_coordinator import AcademicCoordinator
 from auth_app.models import User
@@ -9,7 +9,7 @@ class CreateAcademicCoordinator:
 
     def execute(self, academic_coordinator: AcademicCoordinator) -> AcademicCoordinator:
         if self.repository.exists(academic_coordinator.email):
-            raise UserWithEmailAlreadyExistsException(f"AcademicCoordinator with email {academic_coordinator.email} already exists.")
+            raise UserAlreadyExistsException(f"AcademicCoordinator with email {academic_coordinator.email} already exists.")
 
         user = User.objects.create(
             username=academic_coordinator.email,

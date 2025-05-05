@@ -7,7 +7,7 @@ from sgae_app.interfaces.api.student_view import StudentView
 
 urlpatterns = [
     path("students/",  StudentView.as_view(), name="students"),
-    path("students/<int:student_id>/",  StudentView.as_view(), name="students_get"),
+    path("students/<int:pk>/",  StudentView.as_view(), name="students_get"),
     path("secretaries/",  SecretaryView.as_view(), name="students"),
     path("secretaries/<int:secretary_id>/",  SecretaryView.as_view(), name="secretary_get"),
     path("academics_coordinators/", AcademicCoordinatorView.as_view(), name="academic_coordinators"),

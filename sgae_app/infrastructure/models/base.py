@@ -5,16 +5,16 @@ from django.core.validators import EmailValidator, MinLengthValidator
 from sgae_app.domain.entities.base import Person
 
 class PersonModel(models.Model):
-    first_name = models.CharField(max_length=100)
+    first_name = models.CharField(max_length=100, blank=True, null=True)
     second_name = models.CharField( max_length=100, blank=True, null=True)
-    first_lastname = models.CharField(max_length=100)
+    first_lastname = models.CharField(max_length=100, blank=True, null=True)
     second_lastname = models.CharField(max_length=100, blank=True, null=True)
-    id_card = models.CharField(max_length=20, unique=True, validators=[MinLengthValidator(5)])
-    birthdate = models.DateField(default=datetime.now())
-    place_of_birth = models.CharField(max_length=100)
-    address = models.TextField(max_length=255)
-    phone = models.CharField(max_length=20, validators=[MinLengthValidator(7)])
-    email = models.EmailField(max_length=100, unique=True, validators=[EmailValidator()])
+    id_card = models.CharField(max_length=20, unique=True, validators=[MinLengthValidator(5)], blank=True, null=True)
+    birthdate = models.DateField(default=datetime.now(), blank=True, null=True)
+    place_of_birth = models.CharField(max_length=100, blank=True, null=True)
+    address = models.TextField(max_length=255, blank=True, null=True)
+    phone = models.CharField(max_length=20, validators=[MinLengthValidator(7)], blank=True, null=True)
+    email = models.EmailField(max_length=100, unique=True, validators=[EmailValidator()], blank=True, null=True)
 
     class Meta:
         abstract = True
