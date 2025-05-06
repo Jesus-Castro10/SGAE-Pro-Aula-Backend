@@ -12,10 +12,12 @@ from sgae_app.application.use_cases.secretary_uses_cases import CreateSecretary,
 from sgae_app.infrastructure.repositories.djacademic_coordi_repo import DjangoAcademicCoordinatorRepository
 from sgae_app.infrastructure.repositories.djdirector_repository import DjangoDirectorRepository
 from sgae_app.infrastructure.repositories.djsecretary_repository import DjangoSecretaryRepository
+from sgae_app.infrastructure.repositories.djguardian_repository import DjangoGuardianRepository
 from sgae_app.infrastructure.repositories.djstudent_repository import DjangoStudentRepository
 from sgae_app.application.services.student_service import StudentService
+from sgae_app.application.services.guardian_service import GuardianService
 from sgae_app.application.use_cases.student_uses_cases import *
-
+from sgae_app.application.use_cases.guardian_uses_cases import *
 
 class Container(containers.DeclarativeContainer):
 
@@ -47,6 +49,24 @@ class Container(containers.DeclarativeContainer):
     delete_secretary_use_case = providers.Factory(DeleteSecretary, repository=secretary_repository)
     get_secretary_use_case = providers.Factory(GetSecretary, repository=secretary_repository)
     get_all_secretaries_use_case = providers.Factory(GetAllSecretaries, repository=secretary_repository)
+
+    # Guardian Dependencies
+    guardian_repository = providers.Callable(DjangoGuardianRepository)
+
+    create_guardian_use_case = providers.Factory(CreateGuardian, repository=guardian_repository)
+    update_guardian_use_case = providers.Factory(UpdateGuardian, repository=guardian_repository)
+    delete_guardian_use_case = providers.Factory(DeleteGuardian, repository=guardian_repository)
+    get_guardian_use_case = providers.Factory(GetGuardian, repository=guardian_repository)
+    get_all_guardians_use_case = providers.Factory(GetAllGuardians, repository=guardian_repository)
+
+    guardian_service = providers.Factory(
+        GuardianService,
+        create_guardian_uc=create_guardian_use_case,
+        update_guardian_uc=update_guardian_use_case,
+        delete_guardian_uc=delete_guardian_use_case,
+        get_guardian_uc=get_guardian_use_case,
+        get_all_guardians_uc=get_all_guardians_use_case,
+    )
 
     secretary_service = providers.Factory(
         SecretaryService,
@@ -101,4 +121,22 @@ class Container(containers.DeclarativeContainer):
         delete_director_uc=delete_director_use_case,
         get_director_uc=get_director_use_case,
         get_all_directors_uc=get_all_directors_use_case,
+    )
+
+    # Guardian dependencies
+    guardian_repository = providers.Callable(DjangoGuardianRepository)
+
+    create_guardian_use_case = providers.Factory(CreateGuardian, repository=guardian_repository)
+    update_guardian_use_case = providers.Factory(UpdateGuardian, repository=guardian_repository)
+    delete_guardian_use_case = providers.Factory(DeleteGuardian, repository=guardian_repository)
+    get_guardian_use_case = providers.Factory(GetGuardian, repository=guardian_repository)
+    get_all_guardians_use_case = providers.Factory(GetAllGuardians, repository=guardian_repository)
+
+    guardian_service = providers.Factory(
+        GuardianService,
+        create_guardian_uc=create_guardian_use_case,
+        update_guardian_uc=update_guardian_use_case,
+        delete_guardian_uc=delete_guardian_use_case,
+        get_guardian_uc=get_guardian_use_case,
+        get_all_guardians_uc=get_all_guardians_use_case,
     )
