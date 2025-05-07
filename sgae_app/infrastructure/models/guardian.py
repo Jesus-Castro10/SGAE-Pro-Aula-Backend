@@ -12,10 +12,16 @@ class GuardianModel(PersonModel):
     )
 
     def __str__(self):
-        return f"{self.first_name} {self.first_lastname} ({self.email})"
+        student_names = ', '.join(
+            f"{s.first_name} {s.first_lastname}" for s in self.students.all()
+        ) or "sin estudiantes"
+        return f"{self.first_name} {self.first_lastname} ({self.email}) - Estudiantes: {student_names}"
 
     def to_domain(self):
-        return Guardian(**super().to_domain(), user=self.user)
+        students = list(self.students.all())
+        base_data = super().to_domain()
+        print("base data " + str(base_data))
+        return Guardian(**base_data, user=self.user, students=students)
 
     @classmethod
     def from_domain(cls, guardian: Guardian):

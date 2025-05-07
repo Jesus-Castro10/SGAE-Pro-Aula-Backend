@@ -5,6 +5,13 @@ from auth_app.models import User
 from sgae_app.domain.exceptions.exceptions import (DuplicateKeyException,
     ResourceNotFoundException, UserAlreadyExistsException)
 
+
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+
 class CreateGuardian:
     def __init__(self, repository: GuardianRepository):
         self.repository = repository
@@ -72,6 +79,8 @@ class GetAllGuardians:
 
     def execute(self):
         guardians = self.repository.get_all()
+        print("model ", guardians[0])
+        logger.info('Start reading database')
         if not guardians:
             raise ResourceNotFoundException("No guardians found.")
         return guardians

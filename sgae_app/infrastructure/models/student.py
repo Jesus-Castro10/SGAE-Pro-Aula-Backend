@@ -11,14 +11,21 @@ class StudentModel(PersonModel):
         limit_choices_to={'user_type': 'student'}
     )
 
+    guardian = models.ForeignKey(
+        'GuardianModel',
+        related_name='students',
+        on_delete=models.CASCADE
+    )
+
     def __str__(self):
         return f"{self.first_name} {self.first_lastname} ({self.email})"
 
     def to_domain(self):
-        return Student(**super().to_domain(), user=self.user)
+        return Student(**super().to_domain(), user=self.user, guardian=self.guardian)
 
     @classmethod
     def from_domain(cls, student: Student):
         instance = super().from_domain(student)
         instance.user = student.user
+        instance.guardian = student.guardian
         return instance

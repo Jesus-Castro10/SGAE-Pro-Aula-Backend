@@ -151,5 +151,10 @@ LOGGING = {
             'level': 'INFO',
             'propagate': False,
         },
+        'sgae_app': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
     },
 }

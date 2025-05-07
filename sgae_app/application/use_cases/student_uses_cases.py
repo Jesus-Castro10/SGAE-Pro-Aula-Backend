@@ -1,9 +1,12 @@
+from sgae_app.domain.entities.guardian import Guardian
 from sgae_app.domain.entities.student import Student
 from sgae_app.domain.repositories.student_repository import StudentRepository
 from auth_app.models import User
 
 from sgae_app.domain.exceptions.exceptions import (DuplicateKeyException,
     ResourceNotFoundException, UserAlreadyExistsException)
+from sgae_app.infrastructure.models.guardian import GuardianModel
+
 
 class CreateStudent:
     def __init__(self, repository: StudentRepository):
@@ -24,6 +27,8 @@ class CreateStudent:
             user.set_password(student.id_card)
             user.save()
             student.user = user
+            guardian = GuardianModel.objects.get(id=1)
+            student.guardian = guardian
             self.repository.save(student)
         except Exception as e:
             user.delete()

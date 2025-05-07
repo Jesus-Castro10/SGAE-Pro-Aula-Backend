@@ -3,7 +3,8 @@ from rest_framework import status, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.exceptions import AuthenticationFailed
-from .serializers import PasswordChangeSerializer
+from .serializers import *
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 class PasswordChangeView(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -26,3 +27,8 @@ class PasswordChangeView(APIView):
                 status=status.HTTP_200_OK,
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class LoginView(TokenObtainPairView):
+    permission_classes = [permissions.AllowAny]
+
+    serializer_class = TokenObtainSerializer

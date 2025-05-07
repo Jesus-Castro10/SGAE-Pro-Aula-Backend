@@ -24,7 +24,7 @@ class StudentView(APIView):
         if not data.is_valid():
             raise InvalidDataException(data.errors)
         serialized = data.data
-        student = Student(**serialized, user = None)
+        student = Student(**serialized, user = None, guardian=None)
         studentSaved = self.student_service.create_student(student)
         return Response(StudentDTO(studentSaved).data, status=status.HTTP_201_CREATED)
 

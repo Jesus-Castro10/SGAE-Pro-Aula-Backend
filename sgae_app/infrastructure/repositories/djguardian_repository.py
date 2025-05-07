@@ -9,13 +9,15 @@ class DjangoGuardianRepository(GuardianRepository):
 
     def get_by_id(self, guardian_id: int) -> Any | None:
         try:
-            model = GuardianModel.objects.get(id=guardian_id)
+            model = GuardianModel.objects.prefetch_related('students').get(id=guardian_id)
             return model.to_domain()
         except GuardianModel.DoesNotExist:
             return None
         
     def get_all(self) -> list[Guardian]:
-        return [model.to_domain() for model in GuardianModel.objects.all()]
+        queryset = GuardianModel.objects.prefetch_related('students').all()
+        print(queryset)
+        return [model.to_domain() for model in queryset]
     
     def get_by_email(self, email: str) -> Guardian:
         return GuardianModel.objects.filter(email=email).first().to_domain()
