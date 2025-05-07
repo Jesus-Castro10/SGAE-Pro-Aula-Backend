@@ -22,5 +22,5 @@ urlpatterns = [
     path('teachers/', TeacherView.as_view()),
     path('teachers/<int:pk>/', TeacherView.as_view()),
     path('subjects/', SubjectView.as_view()),
-    path('subjects/<int:pk>/', SubjectView.as_view())
+    path('subjects/<int:pk>/', SubjectView.as_view()),
 ]

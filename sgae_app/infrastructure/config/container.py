@@ -7,6 +7,7 @@ from sgae_app.application.services.subject_service import SubjectService
 from sgae_app.application.services.teacher_service import TeacherService
 from sgae_app.application.services.student_service import StudentService
 from sgae_app.application.services.guardian_service import GuardianService
+from sgae_app.application.services.upload_img_service import UploadImgService
 
 from sgae_app.infrastructure.repositories.djacademic_coordi_repo import DjangoAcademicCoordinatorRepository
 from sgae_app.infrastructure.repositories.djdirector_repository import DjangoDirectorRepository
@@ -153,3 +154,6 @@ class Container(containers.DeclarativeContainer):
         get_subject_uc=get_subject_use_case,
         get_all_subjects_uc=get_all_subjects_use_case,
     )
+    
+    #Upload Image dependencies
+    upload_img_service = providers.Factory(UploadImgService)

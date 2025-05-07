@@ -159,3 +159,9 @@ LOGGING = {
         },
     },
 }
+
+SUPABASE = {
+    'URL': config('SUPABASE_URL'),
+    'KEY': config('SUPABASE_KEY'),
+    'BUCKET_NAME': config('SUPABASE_BUCKET_NAME', default='sgaeimages'),
+}
