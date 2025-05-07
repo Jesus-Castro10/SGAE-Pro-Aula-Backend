@@ -10,14 +10,21 @@ from sgae_app.application.use_cases.director_uses_cases import CreateDirector, U
 from sgae_app.application.use_cases.secretary_uses_cases import CreateSecretary, UpdateSecretary, DeleteSecretary, \
     GetSecretary, GetAllSecretaries
 from sgae_app.infrastructure.repositories.djacademic_coordi_repo import DjangoAcademicCoordinatorRepository
+
 from sgae_app.infrastructure.repositories.djdirector_repository import DjangoDirectorRepository
 from sgae_app.infrastructure.repositories.djsecretary_repository import DjangoSecretaryRepository
-from sgae_app.infrastructure.repositories.djguardian_repository import DjangoGuardianRepository
 from sgae_app.infrastructure.repositories.djstudent_repository import DjangoStudentRepository
+
 from sgae_app.application.services.student_service import StudentService
+
 from sgae_app.application.services.guardian_service import GuardianService
 from sgae_app.application.use_cases.student_uses_cases import *
 from sgae_app.application.use_cases.guardian_uses_cases import *
+from sgae_app.infrastructure.repositories.djguardian_repository import DjangoGuardianRepository
+
+from sgae_app.application.services.teacher_service import TeacherService
+from sgae_app.application.use_cases.teacher_uses_cases import *
+from sgae_app.infrastructure.repositories.djteacher_repository import DjangoTeacherRepository
 
 class Container(containers.DeclarativeContainer):
 
@@ -139,4 +146,22 @@ class Container(containers.DeclarativeContainer):
         delete_guardian_uc=delete_guardian_use_case,
         get_guardian_uc=get_guardian_use_case,
         get_all_guardians_uc=get_all_guardians_use_case,
+    )
+
+    # Teacher dependencies
+    teacher_repository = providers.Callable(DjangoTeacherRepository)
+
+    create_teacher_use_case = providers.Factory(CreateTeacher, repository=teacher_repository)
+    update_teacher_use_case = providers.Factory(UpdateTeacher, repository=teacher_repository)
+    delete_teacher_use_case = providers.Factory(DeleteTeacher, repository=teacher_repository)
+    get_teacher_use_case = providers.Factory(GetTeacher, repository=teacher_repository)
+    get_all_teachers_use_case = providers.Factory(GetAllTeachers, repository=teacher_repository)
+
+    teacher_service = providers.Factory(
+        TeacherService,
+        create_teacher_uc=create_teacher_use_case,
+        update_teacher_uc=update_teacher_use_case,
+        delete_teacher_uc=delete_teacher_use_case,
+        get_teacher_uc=get_teacher_use_case,
+        get_all_teachers_uc=get_all_teachers_use_case,
     )
