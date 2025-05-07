@@ -18,3 +18,4 @@ class SgaeAppConfig(AppConfig):
         container.wire(modules=[".interfaces.api.academic_coordinator_view"])
         container.wire(modules=[".interfaces.api.director_view"])
         container.wire(modules=[".interfaces.api.teacher_view"])
+        container.wire(modules=[".interfaces.api.subject_view"])

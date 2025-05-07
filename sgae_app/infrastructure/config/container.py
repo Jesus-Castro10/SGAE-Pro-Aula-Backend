@@ -3,25 +3,26 @@ from dependency_injector import containers, providers
 from sgae_app.application.services.academic_coordi_service import AcademicCoordinatorService
 from sgae_app.application.services.director_service import DirectorService
 from sgae_app.application.services.secretary_service import SecretaryService
-from sgae_app.application.use_cases.academic_coordi_uses_cases import CreateAcademicCoordinator, \
-    UpdateAcademicCoordinator, DeleteAcademicCoordinator, GetAcademicCoordinator, GetAllAcademicCoordinators
-from sgae_app.application.use_cases.director_uses_cases import CreateDirector, UpdateDirector, DeleteDirector, \
-    GetDirector, GetAllDirectors
-from sgae_app.application.use_cases.secretary_uses_cases import CreateSecretary, UpdateSecretary, DeleteSecretary, \
-    GetSecretary, GetAllSecretaries
+from sgae_app.application.services.subject_service import SubjectService
+from sgae_app.application.services.teacher_service import TeacherService
+from sgae_app.application.services.student_service import StudentService
+from sgae_app.application.services.guardian_service import GuardianService
+
 from sgae_app.infrastructure.repositories.djacademic_coordi_repo import DjangoAcademicCoordinatorRepository
 from sgae_app.infrastructure.repositories.djdirector_repository import DjangoDirectorRepository
 from sgae_app.infrastructure.repositories.djsecretary_repository import DjangoSecretaryRepository
 from sgae_app.infrastructure.repositories.djguardian_repository import DjangoGuardianRepository
 from sgae_app.infrastructure.repositories.djstudent_repository import DjangoStudentRepository
-from sgae_app.application.services.student_service import StudentService
-from sgae_app.application.services.guardian_service import GuardianService
+from sgae_app.infrastructure.repositories.djteacher_repository import DjangoTeacherRepository
+from sgae_app.infrastructure.repositories.djsubject_repository import DjangoSubjectRepository
+
+from sgae_app.application.use_cases.academic_coordi_uses_cases import *
+from sgae_app.application.use_cases.director_uses_cases import *
+from sgae_app.application.use_cases.secretary_uses_cases import *
 from sgae_app.application.use_cases.student_uses_cases import *
 from sgae_app.application.use_cases.guardian_uses_cases import *
-from sgae_app.infrastructure.repositories.djteacher_repository import DjangoTeacherRepository
-from sgae_app.application.use_cases.teacher_uses_cases import (CreateTeacher, DeleteTeacher,
-    GetAllTeachers, GetTeacher, UpdateTeacher)
-from sgae_app.application.services.teacher_service import TeacherService
+from sgae_app.application.use_cases.teacher_uses_cases import *
+from sgae_app.application.use_cases.subject_uses_cases import *
 
 class Container(containers.DeclarativeContainer):
 
@@ -133,4 +134,22 @@ class Container(containers.DeclarativeContainer):
         delete_teacher_uc=delete_teacher_use_case,
         get_teacher_uc=get_teacher_use_case,
         get_all_teachers_uc=get_all_teachers_use_case,
+    )
+    
+    #Subject dependencies
+    subject_repository = providers.Callable(DjangoSubjectRepository)
+
+    create_subject_use_case = providers.Factory(CreateSubject, repository=subject_repository)
+    update_subject_use_case = providers.Factory(UpdateSubject, repository=subject_repository)
+    delete_subject_use_case = providers.Factory(DeleteSubject, repository=subject_repository)
+    get_subject_use_case = providers.Factory(GetSubject, repository=subject_repository)
+    get_all_subjects_use_case = providers.Factory(GetAllSubjects, repository=subject_repository)
+
+    subject_service = providers.Factory(
+        SubjectService,
+        create_subject_uc=create_subject_use_case,
+        update_subject_uc=update_subject_use_case,
+        delete_subject_uc=delete_subject_use_case,
+        get_subject_uc=get_subject_use_case,
+        get_all_subjects_uc=get_all_subjects_use_case,
     )
