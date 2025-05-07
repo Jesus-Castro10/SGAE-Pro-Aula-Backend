@@ -42,12 +42,6 @@ class StudentView(APIView):
             raise InvalidDataException(data.errors)
         student = data.data
         
-        # if not student:
-        #     return Response({"detail": "Estudiante no encontrado"}, status=status.HTTP_404_NOT_FOUND)
-        
-        # for key, value in serialized.items():
-        #     setattr(student, key, value)
-        
         updated_student = self.student_service.update_student(student)
         return Response(StudentDTO(updated_student).data, status=status.HTTP_200_OK)
 

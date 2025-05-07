@@ -5,6 +5,7 @@ from sgae_app.interfaces.api.director_view import DirectorView
 from sgae_app.interfaces.api.secretary_view import SecretaryView
 from sgae_app.interfaces.api.student_view import StudentView
 from sgae_app.interfaces.api.guardian_view import GuardianView
+from sgae_app.interfaces.api.teacher_view import TeacherView
 
 urlpatterns = [
     path("students/",  StudentView.as_view(), name="students"),
@@ -16,5 +17,7 @@ urlpatterns = [
     path('directors/', DirectorView.as_view()),
     path('directors/<int:director_id>/', DirectorView.as_view()),
     path('guardians/', GuardianView.as_view()),
-    path('guardians/<int:guardian_id>/', GuardianView.as_view())
+    path('guardians/<int:guardian_id>/', GuardianView.as_view()),
+    path('teachers/', TeacherView.as_view()),
+    path('teachers/<int:pk>/', TeacherView.as_view())
 ]
