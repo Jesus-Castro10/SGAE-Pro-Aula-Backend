@@ -19,7 +19,7 @@ class SecretaryView(APIView):
     def post(self, request):
         data = SecretaryDTO(request.data)
         serialized = data.data
-        secretary = Secretary(**serialized, user=None)
+        secretary = Secretary(**serialized)
 
         secretary_saved = self.secretary_service.create_secretary(secretary)
         return Response(SecretaryDTO(secretary_saved).data, status=status.HTTP_201_CREATED)

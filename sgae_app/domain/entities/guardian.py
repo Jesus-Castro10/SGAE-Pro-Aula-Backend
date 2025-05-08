@@ -9,10 +9,10 @@ from django.contrib.auth.models import User
 class Guardian(Person):
     students: Optional[List["Student"]] = field(default_factory=list)
 
-    def __init__(self, id_card: str, first_name: str, second_name: str, first_lastname: str, second_lastname: str,
+    def __init__(self,id: int, id_card: str, first_name: str, second_name: str, first_lastname: str, second_lastname: str,
                  birthdate: time, place_of_birth: str, address: str, phone: str, email: str, user: User, students: Optional[List["Student"]]
                  ):
-        super().__init__(id_card, first_name, second_name, first_lastname, second_lastname, birthdate, place_of_birth,
+        super().__init__(id, id_card, first_name, second_name, first_lastname, second_lastname, birthdate, place_of_birth,
                          address, phone, email, user)
         self.students = students
 

@@ -24,7 +24,7 @@ class GuardianView(APIView):
         if not data.is_valid():
             raise InvalidDataException(data.errors)
         serialized = data.data
-        guardian = Guardian(**serialized, user = None, students=None)
+        guardian = Guardian(**serialized,students=None)
         guardianSaved = self.guardian_service.create_guardian(guardian)
         return Response(GuardianDTO(guardianSaved).data, status=status.HTTP_201_CREATED)
 

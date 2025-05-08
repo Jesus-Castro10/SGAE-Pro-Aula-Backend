@@ -79,8 +79,6 @@ class GetAllGuardians:
 
     def execute(self):
         guardians = self.repository.get_all()
-        print("model ", guardians[0])
-        logger.info('Start reading database')
         if not guardians:
             raise ResourceNotFoundException("No guardians found.")
         return guardians

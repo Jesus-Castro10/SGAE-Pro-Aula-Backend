@@ -18,7 +18,7 @@ class AcademicCoordinatorView(APIView):
     def post(self, request):
         data = AcademicCoordinatorDTO(request.data)
         serialized = data.data
-        coordinator = AcademicCoordinator(**serialized, user=None)
+        coordinator = AcademicCoordinator(**serialized)
 
         saved = self.academic_coordinator_service.create_academic_coordinator(coordinator)
         return Response(AcademicCoordinatorDTO(saved).data, status=status.HTTP_201_CREATED)

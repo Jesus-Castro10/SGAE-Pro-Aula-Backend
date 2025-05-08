@@ -21,7 +21,7 @@ class DirectorView(APIView):
     def post(self, request):
         dto = DirectorDTO(request.data)
         serialized = dto.data
-        director = Director(**serialized, user=None)
+        director = Director(**serialized)
 
         created = self.director_service.create_director(director)
         return Response(DirectorDTO(created).data, status=status.HTTP_201_CREATED)
