@@ -17,7 +17,7 @@ def custom_exception_handler(exc, context):
             'message': exc.message,
             'errors': exc.errors if exc.errors else None,
         }, status=exc.status_code)
-
+    
     logger.error("Unhandled exception", exc_info=exc)
 
     return Response({

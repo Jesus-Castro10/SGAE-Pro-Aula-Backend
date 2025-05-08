@@ -28,5 +28,5 @@ class UserAlreadyExistsException(DomainException):
         super().__init__(message, status_code, errors)
         
 class DuplicateKeyException(DomainException):
-    def __init__(self, message="Llave duplicada", status_code=409, errors=None):
+    def __init__(self, message="Error al guardar objeto", status_code=409, errors=None):
         super().__init__(message, status_code, errors)

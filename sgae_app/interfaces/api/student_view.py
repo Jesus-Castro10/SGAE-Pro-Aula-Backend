@@ -24,7 +24,7 @@ class StudentView(APIView):
         if not data.is_valid():
             raise InvalidDataException(data.errors)
         serialized = data.data
-        student = Student(**serialized, user = None, guardian=None)
+        student = Student(**serialized)
         studentSaved = self.student_service.create_student(student)
         return Response(StudentDTO(studentSaved).data, status=status.HTTP_201_CREATED)
 
@@ -40,9 +40,10 @@ class StudentView(APIView):
         data = StudentDTO(data=request.data)
         if not data.is_valid():
             raise InvalidDataException(data.errors)
-        student = data.data
+        serialized = data.data
+        student = Student(**serialized)
         
-        updated_student = self.student_service.update_student(student)
+        updated_student = self.student_service.update_student(pk,student)
         return Response(StudentDTO(updated_student).data, status=status.HTTP_200_OK)
 
     def delete(self, request, pk):

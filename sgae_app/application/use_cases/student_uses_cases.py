@@ -52,9 +52,11 @@ class UpdateStudent:
 
     def execute(self, student_id: int, student: Student):
         student_db = self.repository.get_by_id(student_id)
+        
         if not student_db:
             raise ResourceNotFoundException(f"Student with id {student_id} not found.")
-        
+        student = student_db
+        student.id = student_id
         self.repository.save(student)
         return student
 

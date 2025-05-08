@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 class Person:
     def __init__(
         self,
+        id: int,
         id_card: str,
         first_name: str,
         second_name: str,
@@ -16,6 +17,7 @@ class Person:
         email: str,
         user: User
     ):
+        self.id = id
         self.first_name = first_name
         self.second_name = second_name
         self.first_lastname = first_lastname

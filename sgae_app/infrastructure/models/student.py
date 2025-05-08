@@ -2,6 +2,7 @@ from django.db import models
 from sgae_app.domain.entities.student import Student
 from auth_app.models import User
 from .base import PersonModel
+from .guardian import GuardianModel
 
 
 class StudentModel(PersonModel):
@@ -18,7 +19,7 @@ class StudentModel(PersonModel):
     )
 
     def __str__(self):
-        return f"{self.first_name} {self.first_lastname} ({self.email})"
+        return super().__str__() + f", user: {self.user}, guardian: {self.guardian}"
 
     def to_domain(self):
         return Student(**super().to_domain(), user=self.user, guardian=self.guardian)

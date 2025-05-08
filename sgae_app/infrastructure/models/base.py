@@ -2,9 +2,11 @@ from datetime import datetime
 
 from django.db import models
 from django.core.validators import EmailValidator, MinLengthValidator
+import rest_framework
 from sgae_app.domain.entities.base import Person
 
 class PersonModel(models.Model):
+    id = models.AutoField(primary_key=True)
     first_name = models.CharField(max_length=100)
     second_name = models.CharField( max_length=100, blank=True, null=True)
     first_lastname = models.CharField(max_length=100)
@@ -21,7 +23,8 @@ class PersonModel(models.Model):
         ordering = ['first_lastname', 'first_name']
 
     def __str__(self):
-        return f"{self.first_name} {self.first_lastname} ({self.id_card})"
+        attributes = vars(self)
+        return ', '.join(f"{key}: {value}" for key, value in attributes.items() if not key.startswith('_'))
 
     def get_full_name(self):
         names = [self.first_name]
@@ -37,6 +40,7 @@ class PersonModel(models.Model):
 
     def to_domain(self) -> dict:
         return {
+            'id': self.id,
             'id_card': self.id_card,
             'first_name': self.first_name,
             'second_name': self.second_name,
@@ -52,6 +56,7 @@ class PersonModel(models.Model):
     @classmethod
     def from_domain(cls, person: Person):
         return cls(
+            id=person.id,
             id_card=person.id_card,
             first_name=person.first_name,
             second_name=person.second_name,
@@ -63,3 +68,4 @@ class PersonModel(models.Model):
             address=person.address,
             phone=person.phone
         )
+    

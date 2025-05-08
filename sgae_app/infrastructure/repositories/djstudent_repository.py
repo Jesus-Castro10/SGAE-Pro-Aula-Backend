@@ -7,7 +7,7 @@ from sgae_app.infrastructure.models.student import StudentModel
 
 class DjangoStudentRepository(StudentRepository):
 
-    def get_by_id(self, student_id: int) -> Any | None:
+    def get_by_id(self, student_id: int) -> Student | None:
         try:
             model = StudentModel.objects.get(id=student_id)
             return model.to_domain()
@@ -32,5 +32,6 @@ class DjangoStudentRepository(StudentRepository):
         return StudentModel.objects.filter(email=student.email).exists() or StudentModel.objects.filter(id_card=student.id_card).exists()
 
     def delete(self, student_id: int) -> None:
-        StudentModel.objects.filter(id=student_id).delete()
+        student = StudentModel.objects.get(id=student_id)
+        student.user.delete()
         

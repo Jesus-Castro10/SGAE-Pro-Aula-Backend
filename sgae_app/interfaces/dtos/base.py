@@ -1,7 +1,9 @@
 from rest_framework import serializers
 from sgae_app.domain.exceptions.exceptions import InvalidDataException
+from auth_app.models import User
 
 class PersonDTO(serializers.Serializer):
+    id = serializers.IntegerField(required=False, allow_null=True)
     id_card = serializers.CharField(
         max_length=20,
         min_length=5,
@@ -39,3 +41,6 @@ class PersonDTO(serializers.Serializer):
 
     email = serializers.EmailField()
     
+    user = serializers.PrimaryKeyRelatedField(
+        queryset=User.objects.all(), required=False, allow_null=True
+    )

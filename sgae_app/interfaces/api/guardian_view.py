@@ -24,7 +24,7 @@ class GuardianView(APIView):
         if not data.is_valid():
             raise InvalidDataException(data.errors)
         serialized = data.data
-        guardian = Guardian(**serialized, user = None)
+        guardian = Guardian(**serialized, user = None, students=None)
         guardianSaved = self.guardian_service.create_guardian(guardian)
         return Response(GuardianDTO(guardianSaved).data, status=status.HTTP_201_CREATED)
 
@@ -42,13 +42,7 @@ class GuardianView(APIView):
             raise InvalidDataException(data.errors)
         guardian = data.data
         
-        # if not guardian:
-        #     return Response({"detail": "Tutor no encontrado"}, status=status.HTTP_404_NOT_FOUND)
-        
-        # for key, value in serialized.items():
-        #     setattr(guardian, key, value)
-        
-        updated_guardian = self.guardian_service.update_guardian(guardian)
+        updated_guardian = self.guardian_service.update_guardian(pk,guardian)
         return Response(GuardianDTO(updated_guardian).data, status=status.HTTP_200_OK)
 
     def delete(self, request, guardian_id):
