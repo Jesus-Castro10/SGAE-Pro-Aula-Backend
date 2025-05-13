@@ -8,6 +8,7 @@ from sgae_app.application.services.teacher_service import TeacherService
 from sgae_app.application.services.student_service import StudentService
 from sgae_app.application.services.guardian_service import GuardianService
 from sgae_app.application.services.upload_img_service import UploadImgService
+from sgae_app.application.services.enrollment_service import EnrollmentService
 
 from sgae_app.infrastructure.repositories.djacademic_coordi_repo import DjangoAcademicCoordinatorRepository
 from sgae_app.infrastructure.repositories.djdirector_repository import DjangoDirectorRepository
@@ -16,6 +17,7 @@ from sgae_app.infrastructure.repositories.djguardian_repository import DjangoGua
 from sgae_app.infrastructure.repositories.djstudent_repository import DjangoStudentRepository
 from sgae_app.infrastructure.repositories.djteacher_repository import DjangoTeacherRepository
 from sgae_app.infrastructure.repositories.djsubject_repository import DjangoSubjectRepository
+from sgae_app.infrastructure.repositories.djenrollment_repository import DjangoEnrollmentRepository
 
 from sgae_app.application.use_cases.academic_coordi_uses_cases import *
 from sgae_app.application.use_cases.director_uses_cases import *
@@ -24,6 +26,7 @@ from sgae_app.application.use_cases.student_uses_cases import *
 from sgae_app.application.use_cases.guardian_uses_cases import *
 from sgae_app.application.use_cases.teacher_uses_cases import *
 from sgae_app.application.use_cases.subject_uses_cases import *
+from sgae_app.application.use_cases.enrollments_uses_cases import *
 
 class Container(containers.DeclarativeContainer):
 
@@ -157,3 +160,21 @@ class Container(containers.DeclarativeContainer):
     
     #Upload Image dependencies
     upload_img_service = providers.Factory(UploadImgService)
+    
+    #Enrollment dependencies
+    enrollment_repository = providers.Callable(DjangoEnrollmentRepository)
+
+    create_enrollment_use_case = providers.Factory(CreateEnrollment, repository=enrollment_repository)
+    update_enrollment_use_case = providers.Factory(UpdateEnrollment, repository=enrollment_repository)
+    delete_enrollment_use_case = providers.Factory(DeleteEnrollment, repository=enrollment_repository)
+    get_enrollment_use_case = providers.Factory(GetEnrollment, repository=enrollment_repository)
+    get_all_enrollments_use_case = providers.Factory(GetAllEnrollments, repository=enrollment_repository)
+
+    enrollment_service = providers.Factory(
+        EnrollmentService,
+        create_enrollment_uc=create_enrollment_use_case,
+        update_enrollment_uc=update_enrollment_use_case,
+        delete_enrollment_uc=delete_enrollment_use_case,
+        get_enrollment_uc=get_enrollment_use_case,
+        get_all_enrollments_uc=get_all_enrollments_use_case,
+    )

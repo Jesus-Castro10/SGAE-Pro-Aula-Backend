@@ -4,7 +4,6 @@ from sgae_app.domain.entities.student import Student
 from sgae_app.domain.repositories.student_repository import StudentRepository
 from sgae_app.infrastructure.models.student import StudentModel
 
-
 class DjangoStudentRepository(StudentRepository):
 
     def get_by_id(self, student_id: int) -> Student | None:

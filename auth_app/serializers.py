@@ -16,17 +16,7 @@ class PasswordChangeSerializer(serializers.Serializer):
             raise serializers.ValidationError(e.messages)
         return value
 
-class TokenObtainSerializer(TokenObtainPairSerializer):
-    @classmethod
-    def get_token(cls, user):
-        token = super().get_token(user)
-        token['username'] = user.username
-        return token
-
-    def validate(self, attrs):
-        data = super().validate(attrs)
-
-        data['username'] = self.user.username
-        data['user_type'] = self.user.user_type
-
-        return data
+class TokenObtainSerializer(serializers.Serializer):
+    username = serializers.CharField(required=True)
+    password = serializers.CharField(required=True)
+    

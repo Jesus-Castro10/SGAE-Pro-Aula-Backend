@@ -9,6 +9,7 @@ from sgae_app.domain.entities.student import Student
 from dependency_injector.wiring import Provide
 from sgae_app.infrastructure.config.container import Container
 from sgae_app.domain.exceptions.exceptions import InvalidDataException
+from sgae_app.interfaces.dtos.response_dto import DynamicModelSerializer
 
 
 class StudentView(APIView):
@@ -31,6 +32,7 @@ class StudentView(APIView):
     def get(self, request, pk=None):
         if pk:
             student = self.student_service.get_student(pk)
+            print(student)
             return Response(StudentDTO(student).data)
         else:
             students = self.student_service.get_all_students()

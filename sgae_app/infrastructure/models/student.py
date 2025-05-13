@@ -2,7 +2,6 @@ from django.db import models
 from sgae_app.domain.entities.student import Student
 from auth_app.models import User
 from .base import PersonModel
-from .guardian import GuardianModel
 
 
 class StudentModel(PersonModel):
@@ -17,16 +16,24 @@ class StudentModel(PersonModel):
         related_name='students',
         on_delete=models.CASCADE
     )
-
+    
+    enrollment = models.ForeignKey(
+        'EnrollmentModel',
+        related_name='students',
+        on_delete=models.CASCADE,
+        null=True,
+    )
+    
     def __str__(self):
         return super().__str__() + f", user: {self.user}, guardian: {self.guardian}"
 
     def to_domain(self):
-        return Student(**super().to_domain(), user=self.user, guardian=self.guardian)
+        return Student(**super().to_domain(), user=self.user, guardian=self.guardian, enrollment=self.enrollment)
 
     @classmethod
     def from_domain(cls, student: Student):
         instance = super().from_domain(student)
         instance.user = student.user
         instance.guardian = student.guardian
+        instance.enrollment = student.enrollment
         return instance

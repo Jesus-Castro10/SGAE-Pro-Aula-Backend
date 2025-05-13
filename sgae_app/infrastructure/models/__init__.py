@@ -1,0 +1,7 @@
+from sgae_app.infrastructure.models.grade import GradeModel
+from sgae_app.infrastructure.models.group import GroupModel
+from sgae_app.infrastructure.models.subject_assignment import SubjectAssignmentModel
+from sgae_app.infrastructure.models.enrollment import EnrollmentModel
+from sgae_app.infrastructure.models.classroom import ClassRoomModel
+from sgae_app.infrastructure.models.schedule import ScheduleModel
+from sgae_app.infrastructure.models.schedule_item import ScheduleItemModel

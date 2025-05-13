@@ -3,6 +3,7 @@ from rest_framework.views import exception_handler
 from rest_framework import status
 from sgae_app.domain.exceptions.exceptions import DomainException
 import logging
+from auth_app.exceptions import AuthException
 
 logger = logging.getLogger(__name__)
 
@@ -18,6 +19,12 @@ def custom_exception_handler(exc, context):
             'errors': exc.errors if exc.errors else None,
         }, status=exc.status_code)
     
+    if isinstance(exc, AuthException):
+        return Response({
+            'message': exc.message,
+            'errors': exc.errors if exc.errors else None,
+        }, status=exc.status_code)
+        
     logger.error("Unhandled exception", exc_info=exc)
 
     return Response({

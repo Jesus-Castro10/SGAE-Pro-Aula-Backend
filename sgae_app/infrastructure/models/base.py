@@ -1,8 +1,5 @@
-from datetime import datetime
-
 from django.db import models
 from django.core.validators import EmailValidator, MinLengthValidator
-import rest_framework
 from sgae_app.domain.entities.base import Person
 
 class PersonModel(models.Model):
