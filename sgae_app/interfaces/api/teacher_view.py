@@ -24,7 +24,7 @@ class TeacherView(APIView):
         if not data.is_valid():
             raise InvalidDataException(data.errors)
         serialized = data.data
-        teacher = Teacher(**serialized, user=None)
+        teacher = Teacher(**serialized)
         teacher_saved = self.teacher_service.create_teacher(teacher)
         return Response(TeacherDTO(teacher_saved).data, status=status.HTTP_201_CREATED)
 

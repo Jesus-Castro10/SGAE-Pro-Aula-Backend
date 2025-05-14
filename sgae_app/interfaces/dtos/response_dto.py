@@ -1,32 +1,44 @@
-from rest_framework import serializers
+from datetime import date, datetime
+from django.db.models import Model, QuerySet
+import math
 
-class DynamicModelSerializer(serializers.Serializer):
-    """
-    Serializador genérico para clases de Python.
-    """
+def serialize(obj, visited=None):
+    if visited is None:
+        visited = set()
 
-    def __init__(self, instance, *args, **kwargs):
-        """
-        El serializador infiere los atributos de la clase directamente.
-        """
-        if not hasattr(instance, '__dict__'):
-            raise ValueError("La instancia debe ser un objeto de clase de Python con atributos.")
+    if id(obj) in visited:
+        return f"<recursion detected: {type(obj).__name__}>"
 
-        fields = {key: value for key, value in instance.__dict__.items()}
-        self._dynamic_fields = fields
-        super().__init__(instance, *args, **kwargs)
+    visited.add(id(obj))
 
-    def to_representation(self, instance):
-        """
-        Representación de los datos del objeto en formato serializado.
-        """
-        representation = {field: getattr(instance, field) for field in self._dynamic_fields}
-        return representation
-
-    def to_internal_value(self, data):
-        """
-        Convierte los datos deserializados en una instancia de clase de Python.
-        """
-       
-        validated_data = {field: data.get(field) for field in self._dynamic_fields}
-        return validated_data
+    if isinstance(obj, (str, bool)) or obj is None:
+        return obj
+    elif isinstance(obj, (int, float)):
+        if isinstance(obj, float) and (math.isnan(obj) or math.isinf(obj)):
+            return None
+        return obj
+    elif isinstance(obj, (datetime, date)):
+        return obj.isoformat()
+    elif isinstance(obj, (list, tuple, QuerySet)):
+        return [serialize(item, visited) for item in obj]
+    elif isinstance(obj, dict):
+        return {str(key): serialize(value, visited) for key, value in obj.items()}
+    elif isinstance(obj, Model):
+        data = {}
+        for field in obj._meta.get_fields():
+            if field.is_relation and field.auto_created and not field.concrete:
+                continue
+            try:
+                value = getattr(obj, field.name)
+                data[field.name] = serialize(value, visited)
+            except Exception:
+                data[field.name] = f"<unserializable: {type(field).__name__}>"
+        return data
+    elif hasattr(obj, '__dict__'):
+        return {
+            str(key): serialize(value, visited)
+            for key, value in obj.__dict__.items()
+            if not key.startswith('_') and not callable(value)
+        }
+    else:
+        return str(obj)
