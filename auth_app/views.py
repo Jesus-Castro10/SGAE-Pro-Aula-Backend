@@ -55,8 +55,6 @@ class LoginView(APIView):
         
         if not user.is_active:
             raise AuthenticationFailed(message="El usuario no está activo.")
-        if user.is_authenticated:
-            raise AuthenticationFailed(message="Usuario ya se encuentra autenticado.")
         
         token = RefreshToken.for_user(user)
         access = token.access_token
