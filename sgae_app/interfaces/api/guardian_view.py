@@ -10,7 +10,8 @@ from dependency_injector.wiring import Provide
 from sgae_app.infrastructure.config.container import Container
 from sgae_app.domain.exceptions.exceptions import InvalidDataException
 
-
+import logging
+logger = logging.getLogger(__name__)
 class GuardianView(APIView):
     def __init__(self, 
                  guardian_service : GuardianService = None,
@@ -24,6 +25,7 @@ class GuardianView(APIView):
         if not data.is_valid():
             raise InvalidDataException(data.errors)
         serialized = data.data
+        
         guardian = Guardian(**serialized, students=None)
         guardianSaved = self.guardian_service.create_guardian(guardian)
         return Response(GuardianDTO(guardianSaved).data, status=status.HTTP_201_CREATED)

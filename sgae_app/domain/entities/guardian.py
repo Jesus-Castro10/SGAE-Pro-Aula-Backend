@@ -18,10 +18,11 @@ class Guardian(Person):
         phone: str,
         email: str,
         user: User,
+        image: str,
         students: Optional[List["Student"]] = None
     ):
         super().__init__(id, id_card, first_name, second_name, first_lastname, second_lastname, birthdate, place_of_birth,
-                         address, phone, email, user)
+                         address, phone, email, user, image)
         self.students = students or []
 
     def __str__(self):

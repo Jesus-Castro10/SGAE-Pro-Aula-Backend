@@ -14,7 +14,7 @@ class PersonModel(models.Model):
     address = models.TextField(max_length=255, blank=True, null=True)
     phone = models.CharField(max_length=20, validators=[MinLengthValidator(7)])
     email = models.EmailField(max_length=100, unique=True, validators=[EmailValidator()])
-
+    image = models.CharField(max_length=255, blank=True, null=True) 
     class Meta:
         abstract = True
         ordering = ['first_lastname', 'first_name']
@@ -48,6 +48,7 @@ class PersonModel(models.Model):
             'place_of_birth': self.place_of_birth,
             'address': self.address,
             'phone': self.phone,
+            'image': self.image
         }
 
     @classmethod
@@ -63,6 +64,7 @@ class PersonModel(models.Model):
             birthdate=person.birthdate,
             place_of_birth=person.place_of_birth,
             address=person.address,
-            phone=person.phone
+            phone=person.phone,
+            image=person.image
         )
     

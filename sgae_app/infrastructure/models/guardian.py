@@ -20,7 +20,6 @@ class GuardianModel(PersonModel):
     def to_domain(self):
         students = list(self.students.all())
         base_data = super().to_domain()
-        print("base data " + str(base_data))
         return Guardian(**base_data, user=self.user, students=students)
 
     @classmethod

@@ -16,7 +16,8 @@ class Person:
         address: str,
         phone: str,
         email: str,
-        user: User
+        user: User,
+        image: str = None,
     ):
         if not id_card or len(id_card.strip()) < 5:
             raise ValueError("La cédula es obligatoria y debe tener al menos 5 caracteres.")
@@ -38,10 +39,11 @@ class Person:
         self.address = address
         self.phone = phone
         self.email = email
-        self.user = user
+        self.user = user,
+        self.image = image
 
     def __str__(self):
-        return f"{self.get_full_name()} ({self.id_card})"
+        return f"{self.get_full_name()} ({self.id_card}) - {self.image or 'Sin imagen'}"
 
     def get_full_name(self):
         return f"{self.first_name} {self.second_name or ''} {self.first_lastname} {self.second_lastname or ''}".strip()

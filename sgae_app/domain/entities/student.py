@@ -18,12 +18,13 @@ class Student(Person):
         phone: str,
         email: str,
         user: User,
+        image: str,
         guardian: Optional["Guardian"] = None,
         enrollment: Optional["Enrollment"] = None,
         grades: Optional[List["Grade"]] = None
     ):
         super().__init__(id, id_card, first_name, second_name, first_lastname, second_lastname, birthdate, place_of_birth,
-                         address, phone, email, user)
+                         address, phone, email, user, image)
         self.guardian = guardian
         self.enrollment = enrollment
         self.grades = grades or []

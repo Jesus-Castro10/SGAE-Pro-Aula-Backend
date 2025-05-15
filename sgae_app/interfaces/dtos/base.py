@@ -41,6 +41,12 @@ class PersonDTO(serializers.Serializer):
 
     email = serializers.EmailField()
     
+    image = serializers.CharField(
+        required=False,
+        allow_blank=True,
+        allow_null=True
+    )
+    
     user = serializers.PrimaryKeyRelatedField(
         queryset=User.objects.all(), required=False, allow_null=True
     )
