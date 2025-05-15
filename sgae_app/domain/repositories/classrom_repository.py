@@ -1,19 +1,19 @@
-from sgae_app.domain.entities.classroom import ClassRoom
+from sgae_app.domain.entities.classroom import Classroom
 
 class ClassRoomRepository:
-    def get_all(self) -> list[ClassRoom]:
+    def get_all(self) -> list[Classroom]:
         raise NotImplementedError
 
-    def get_by_id(self, classroom_id: int) -> ClassRoom:
+    def get_by_id(self, classroom_id: int) -> Classroom:
         raise NotImplementedError
 
-    def save(self, classroom: ClassRoom) -> ClassRoom:
+    def save(self, classroom: Classroom) -> Classroom:
         raise NotImplementedError
 
-    def update(self, classroom_id: int, classroom: ClassRoom) -> ClassRoom:
+    def update(self, classroom_id: int, classroom: Classroom) -> Classroom:
         raise NotImplementedError
 
-    def exists(self, classroom: ClassRoom) -> bool:
+    def exists(self, classroom: Classroom) -> bool:
         raise NotImplementedError
 
     def delete(self, classroom_id: int) -> None:

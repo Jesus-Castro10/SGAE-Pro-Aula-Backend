@@ -1,6 +1,6 @@
 from datetime import datetime
 
-class ClassRoom:
+class Classroom:
     def __init__(self, id: int = None, name: str = '', capacity: int = 0, registered_at: datetime = None):
         if not name:
             raise ValueError("El nombre del aula no puede estar vacío.")

@@ -1,5 +1,5 @@
 from sgae_app.application.use_cases.classroom_uses_cases import *
-from sgae_app.domain.entities.classroom import ClassRoom
+from sgae_app.domain.entities.classroom import Classroom
 
 class ClassRoomService:
     def __init__(self,
@@ -15,10 +15,10 @@ class ClassRoomService:
         self.get_classroom_uc = get_classroom_uc
         self.get_all_classrooms_uc = get_all_classrooms_uc
 
-    def create(self, classroom: ClassRoom):
+    def create(self, classroom: Classroom):
         return self.create_classroom_uc.execute(classroom)
 
-    def update(self, classroom_id, classroom: ClassRoom):
+    def update(self, classroom_id, classroom: Classroom):
         return self.update_classroom_uc.execute(classroom_id, classroom)
 
     def delete(self, classroom_id):

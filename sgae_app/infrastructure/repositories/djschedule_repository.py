@@ -12,7 +12,7 @@ class DjangoScheduleRepository(ScheduleRepository):
             return None
 
     def get_all(self) -> List[Schedule]:
-        return [m.to_domain() for m in ScheduleModel.objects.all()]
+        return [m.to_domain() for m in ScheduleModel.objects.prefetch_related('items').all()]
 
     def save(self, schedule: Schedule) -> Schedule:
         model = ScheduleModel.from_domain(schedule)

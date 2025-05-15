@@ -30,10 +30,10 @@ class EnrollmentView(APIView):
 
     def get(self, request, pk=None):
         if pk:
-            Enrollment = self.enrollment_service.get_enrollment(pk)
-            return Response(EnrollmentDTO(Enrollment).data)
+            enrollment = self.enrollment_service.get(pk)
+            return Response(EnrollmentDTO(enrollment).data)
         else:
-            Enrollments = self.enrollment_service.get_all_enrollments()
+            Enrollments = self.enrollment_service.get_all()
             return Response(EnrollmentDTO(Enrollments, many=True).data)
 
     def put(self, request, pk):

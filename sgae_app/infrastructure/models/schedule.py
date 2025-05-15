@@ -1,4 +1,5 @@
 from django.db import models
+from sgae_app.domain.entities.schedule import Schedule
 
 class ScheduleModel(models.Model):
     id = models.AutoField(
@@ -12,3 +13,11 @@ class ScheduleModel(models.Model):
 
     def __str__(self):
         return f"{self.id})"
+    
+    def to_domain(self):
+        items = list(self.items.all())
+        return Schedule(id=self.id, items=items)
+
+    @classmethod
+    def from_domain(cls, subject):
+        return cls(id=subject.id, items=subject.items)
