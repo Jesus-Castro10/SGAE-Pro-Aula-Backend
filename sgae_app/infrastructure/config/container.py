@@ -9,6 +9,10 @@ from sgae_app.application.services.student_service import StudentService
 from sgae_app.application.services.guardian_service import GuardianService
 from sgae_app.application.services.upload_img_service import UploadImgService
 from sgae_app.application.services.enrollment_service import EnrollmentService
+from sgae_app.application.services.grade_service import GradeService
+from sgae_app.application.services.group_service import GroupService
+from sgae_app.application.services.classroom_service import ClassRoomService
+from sgae_app.application.services.schedule_service import ScheduleService
 
 from sgae_app.infrastructure.repositories.djacademic_coordi_repo import DjangoAcademicCoordinatorRepository
 from sgae_app.infrastructure.repositories.djdirector_repository import DjangoDirectorRepository
@@ -27,6 +31,15 @@ from sgae_app.application.use_cases.guardian_uses_cases import *
 from sgae_app.application.use_cases.teacher_uses_cases import *
 from sgae_app.application.use_cases.subject_uses_cases import *
 from sgae_app.application.use_cases.enrollments_uses_cases import *
+
+from sgae_app.infrastructure.repositories.djgrade_repository import DjangoGradeRepository
+from sgae_app.application.use_cases.grade_uses_cases import *
+from sgae_app.infrastructure.repositories.djgroup_repository import DjangoGroupRepository
+from sgae_app.application.use_cases.group_uses_cases import *
+from sgae_app.infrastructure.repositories.djclassroom_repository import DjangoClassRoomRepository
+from sgae_app.application.use_cases.classroom_uses_cases import *
+from sgae_app.infrastructure.repositories.djschedule_repository import DjangoScheduleRepository
+from sgae_app.application.use_cases.schedule_uses_cases import *
 
 class Container(containers.DeclarativeContainer):
 
@@ -177,4 +190,76 @@ class Container(containers.DeclarativeContainer):
         delete_enrollment_uc=delete_enrollment_use_case,
         get_enrollment_uc=get_enrollment_use_case,
         get_all_enrollments_uc=get_all_enrollments_use_case,
+    )
+
+    # Grade dependencies
+    grade_repository = providers.Callable(DjangoGradeRepository)
+
+    create_grade_use_case = providers.Factory(CreateGrade, repository=grade_repository)
+    update_grade_use_case = providers.Factory(UpdateGrade, repository=grade_repository)
+    delete_grade_use_case = providers.Factory(DeleteGrade, repository=grade_repository)
+    get_grade_use_case = providers.Factory(GetGrade, repository=grade_repository)
+    get_all_grades_use_case = providers.Factory(GetAllGrades, repository=grade_repository)
+
+    grade_service = providers.Factory(
+        GradeService,
+        create_grade_uc=create_grade_use_case,
+        update_grade_uc=update_grade_use_case,
+        delete_grade_uc=delete_grade_use_case,
+        get_grade_uc=get_grade_use_case,
+        get_all_grades_uc=get_all_grades_use_case,
+    )
+
+    # Group dependencies
+    group_repository = providers.Callable(DjangoGroupRepository)
+
+    create_group_use_case = providers.Factory(CreateGroup, repository=group_repository)
+    update_group_use_case = providers.Factory(UpdateGroup, repository=group_repository)
+    delete_group_use_case = providers.Factory(DeleteGroup, repository=group_repository)
+    get_group_use_case = providers.Factory(GetGroup, repository=group_repository)
+    get_all_groups_use_case = providers.Factory(GetAllGroups, repository=group_repository)
+
+    group_service = providers.Factory(
+        GroupService,
+        create_group_uc=create_group_use_case,
+        update_group_uc=update_group_use_case,
+        delete_group_uc=delete_group_use_case,
+        get_group_uc=get_group_use_case,
+        get_all_groups_uc=get_all_groups_use_case,
+    )
+
+    # ClassRoom dependencies
+    classroom_repository = providers.Callable(DjangoClassRoomRepository)
+
+    create_classroom_use_case = providers.Factory(CreateClassroom, repository=classroom_repository)
+    update_classroom_use_case = providers.Factory(UpdateClassroom, repository=classroom_repository)
+    delete_classroom_use_case = providers.Factory(DeleteClassroom, repository=classroom_repository)
+    get_classroom_use_case = providers.Factory(GetClassroom, repository=classroom_repository)
+    get_all_classrooms_use_case = providers.Factory(GetAllClassrooms, repository=classroom_repository)
+
+    classroom_service = providers.Factory(
+        ClassRoomService,
+        create_classroom_uc=create_classroom_use_case,
+        update_classroom_uc=update_classroom_use_case,
+        delete_classroom_uc=delete_classroom_use_case,
+        get_classroom_uc=get_classroom_use_case,
+        get_all_classrooms_uc=get_all_classrooms_use_case,
+    )
+    
+    # Schedule dependencies
+    schedule_repository = providers.Callable(DjangoScheduleRepository)
+
+    create_schedule_use_case = providers.Factory(CreateSchedule, repository=schedule_repository)
+    update_schedule_use_case = providers.Factory(UpdateSchedule, repository=schedule_repository)
+    delete_schedule_use_case = providers.Factory(DeleteSchedule, repository=schedule_repository)
+    get_schedule_use_case = providers.Factory(GetSchedule, repository=schedule_repository)
+    get_all_schedules_use_case = providers.Factory(GetAllSchedules, repository=schedule_repository)
+
+    schedule_service = providers.Factory(
+        ScheduleService,
+        create_schedule_uc=create_schedule_use_case,
+        update_schedule_uc=update_schedule_use_case,
+        delete_schedule_uc=delete_schedule_use_case,
+        get_schedule_uc=get_schedule_use_case,
+        get_all_schedules_uc=get_all_schedules_use_case,
     )

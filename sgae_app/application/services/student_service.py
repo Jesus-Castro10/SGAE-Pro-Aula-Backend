@@ -1,9 +1,6 @@
 from sgae_app.application.use_cases.student_uses_cases import *
 from sgae_app.domain.entities.student import Student
 
-import logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
 
 class StudentService:
     def __init__(self,

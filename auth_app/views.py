@@ -29,10 +29,6 @@ class PasswordChangeView(APIView):
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-# class LoginView(TokenObtainPairView):
-#     permission_classes = [permissions.AllowAny]
-
-#     serializer_class = TokenObtainSerializer
     
 class LoginView(APIView):
     permission_classes = [permissions.AllowAny]

@@ -2,6 +2,7 @@ from django.db import models
 from sgae_app.domain.entities.subject import Subject
 
 class SubjectModel(models.Model):
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255, unique=True)
     code = models.CharField(max_length=10, unique=True)
     description = models.TextField()
