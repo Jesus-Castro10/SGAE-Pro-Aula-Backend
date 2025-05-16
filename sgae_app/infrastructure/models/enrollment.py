@@ -7,23 +7,26 @@ class EnrollmentModel(models.Model):
         primary_key=True,
         verbose_name='ID'
     )
-    student = models.ForeignKey(
+
+    student = models.OneToOneField(
         'StudentModel',
         on_delete=models.CASCADE,
-        related_name='enrollments'
+        related_name='enrollment'
     )
+
     group = models.ForeignKey(
         'GroupModel',
         on_delete=models.CASCADE,
         related_name='enrollments'
     )
-    academic_year = models.PositiveIntegerField(
-        verbose_name='Año académico'
-    )
+
+    academic_year = models.PositiveIntegerField(verbose_name='Año académico')
+
     enrollment_date = models.DateField(
         default=timezone.now,
         verbose_name='Fecha de matrícula'
     )
+
     status = models.CharField(
         max_length=20,
         choices=[
@@ -34,6 +37,7 @@ class EnrollmentModel(models.Model):
         default='active',
         verbose_name='Estado'
     )
+
     observations = models.TextField(
         blank=True,
         null=True,
@@ -48,16 +52,16 @@ class EnrollmentModel(models.Model):
     def __str__(self):
         return f"({self.id}) ({self.academic_year})"
 
-    def to_domain(self) -> dict:
-        return {
-            'id': self.id,
-            'student': self.student,
-            'group': self.group,
-            'academic_year': self.academic_year,
-            'enrollment_date': self.enrollment_date,
-            'status': self.status,
-            'observations': self.observations
-        }
+    def to_domain(self) -> Enrollment:
+        return Enrollment(
+            id=self.id,
+            student=self.student,
+            group=self.group,
+            academic_year=self.academic_year,
+            enrollment_date=self.enrollment_date,
+            status=self.status,
+            observations=self.observations
+        )
 
     @classmethod
     def from_domain(cls, enrollment: Enrollment):

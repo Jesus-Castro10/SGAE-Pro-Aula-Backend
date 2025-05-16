@@ -1,6 +1,9 @@
 from sgae_app.domain.exceptions.exceptions import DuplicateKeyException, ResourceNotFoundException
 from sgae_app.infrastructure.models.student import StudentModel
 from sgae_app.infrastructure.models.group import GroupModel
+from sgae_app.domain.utils.mapping import mapper as enrollment_mapper
+from sgae_app.domain.entities.enrollment import Enrollment
+from sgae_app.infrastructure.repositories.djenrollment_repository import DjangoEnrollmentRepository
 
 class CreateEnrollment:
     def __init__(self, repository):
@@ -48,14 +51,21 @@ class GetEnrollmentsByStudent:
         return self.repository.get_by_student_id(student_id)
 
 class UpdateEnrollment:
-    def __init__(self, repository):
+    def __init__(self, repository: DjangoEnrollmentRepository):
         self.repository = repository
 
-    def execute(self, enrollment_id: int, enrollment):
-        if not self.repository.get_by_id(enrollment_id):
+    def execute(self, enrollment_id: int, update_data: Enrollment):
+        enrollment_db = self.repository.get_by_id(enrollment_id)
+        if not enrollment_db:
             raise ResourceNotFoundException("Enrollment not found.")
-        enrollment.id = enrollment_id
-        return self.repository.update(enrollment_id, enrollment)
+        
+        enrollment_mapper(enrollment_db, update_data, fields = [
+            'academic_year', 'enrollment_date', 'status', 'observations'
+        ])
+        enrollment_db.student = StudentModel.objects.get(id=update_data.student)
+        enrollment_db.group = GroupModel.objects.get(id=update_data.group)
+        
+        return self.repository.update(enrollment_id, enrollment_db)
 
 class DeleteEnrollment:
     def __init__(self, repository):

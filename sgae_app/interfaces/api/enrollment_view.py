@@ -40,14 +40,11 @@ class EnrollmentView(APIView):
         data = EnrollmentDTO(data=request.data)
         if not data.is_valid():
             raise InvalidDataException(data.errors)
-        updated = self.enrollment_service.update_enrollment(
-            pk,
-            name=data.validated_data["name"],
-            code=data.validated_data["code"],
-            description=data.validated_data.get("description", "")
-        )
+        serialized = data.data
+        enrollment = Enrollment(**serialized)
+        updated = self.enrollment_service.update(pk,enrollment)
         return Response(EnrollmentDTO(updated).data, status=status.HTTP_200_OK)
 
     def delete(self, request, pk):
-        self.enrollment_service.delete_Enrollment(pk)
-        return Response("Asignatura eliminada correctamente", status=status.HTTP_204_NO_CONTENT)
+        self.enrollment_service.delete(pk)
+        return Response("Matricula eliminada correctamente", status=status.HTTP_204_NO_CONTENT)

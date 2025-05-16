@@ -19,3 +19,6 @@ class Enrollment:
 
     def is_active(self):
         return self.status == 'active'
+    
+    def __str__(self):
+        return f"Enrollment(id={self.id}, student={self.student}, group={self.group}, academic_year={self.academic_year}, enrollment_date={self.enrollment_date}, status={self.status}, observations={self.observations})"

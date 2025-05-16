@@ -8,12 +8,14 @@ class DjangoStudentRepository(StudentRepository):
 
     def get_by_id(self, student_id: int) -> Optional[Student]:
         try:
-            return StudentModel.objects.get(id=student_id).to_domain()
+            model = StudentModel.objects.select_related("enrollment").get(id=student_id)
+            return model.to_domain()
         except StudentModel.DoesNotExist:
             return None
 
     def get_all(self) -> List[Student]:
-        return [model.to_domain() for model in StudentModel.objects.all()]
+        queryset = StudentModel.objects.select_related("enrollment").all()
+        return [model.to_domain() for model in queryset]
 
     def get_by_email(self, email: str) -> Optional[Student]:
         model = StudentModel.objects.filter(email=email).first()

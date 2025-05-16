@@ -17,13 +17,6 @@ class StudentModel(PersonModel):
         on_delete=models.CASCADE
     )
     
-    enrollment = models.ForeignKey(
-        'EnrollmentModel',
-        related_name='students',
-        on_delete=models.CASCADE,
-        null=True,
-    )
-    
     def __str__(self):
         return super().__str__() + f", user: {self.user}, guardian: {self.guardian}"
 
