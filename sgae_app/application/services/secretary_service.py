@@ -23,8 +23,8 @@ class SecretaryService:
     def create_secretary(self, secretary: Secretary):
         return self.create_secretary_uc.execute(secretary)
 
-    def update_secretary(self, secretary_id, first_name, last_name, email):
-        return self.update_secretary_uc.execute(secretary_id, first_name, last_name, email)
+    def update_secretary(self, secretary_id, secretary: Secretary):
+        return self.update_secretary_uc.execute(secretary_id, secretary)
 
     def delete_secretary(self, secretary_id):
         return self.delete_secretary_uc.execute(secretary_id)

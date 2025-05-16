@@ -21,7 +21,9 @@ class DjangoDirectorRepository(DirectorRepository):
         return DirectorModel.objects.filter(email=email).exists()
 
     def delete(self, director_id: int) -> None:
-        DirectorModel.objects.filter(id=director_id).delete()
+        director = DirectorModel.objects.get(id=director_id)
+        director.user.delete()
+        director.delete()
 
     def get_all(self) -> list[Director]:
         return [model.to_domain() for model in DirectorModel.objects.all()]

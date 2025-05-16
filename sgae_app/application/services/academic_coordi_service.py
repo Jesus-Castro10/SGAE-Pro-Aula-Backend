@@ -23,8 +23,8 @@ class AcademicCoordinatorService:
     def create_academic_coordinator(self, coordinator: AcademicCoordinator):
         return self.create_academic_coordinator_uc.execute(coordinator)
 
-    def update_academic_coordinator(self, coordinator_id, first_name, last_name, email):
-        return self.update_academic_coordinator_uc.execute(coordinator_id, first_name, last_name, email)
+    def update_academic_coordinator(self, coordinator_id, academic_coordinator: AcademicCoordinator):
+        return self.update_academic_coordinator_uc.execute(coordinator_id, academic_coordinator)
 
     def delete_academic_coordinator(self, coordinator_id):
         return self.delete_academic_coordinator_uc.execute(coordinator_id)

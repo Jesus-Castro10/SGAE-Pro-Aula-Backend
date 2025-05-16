@@ -40,9 +40,9 @@ class TeacherView(APIView):
         data = TeacherDTO(data=request.data)
         if not data.is_valid():
             raise InvalidDataException(data.errors)
-        teacher_data = data.data
-
-        updated_teacher = self.teacher_service.update_teacher(teacher_data)
+        serialized = data.data
+        teacher = Teacher(**serialized)
+        updated_teacher = self.teacher_service.update_teacher(pk,teacher)
         return Response(TeacherDTO(updated_teacher).data, status=status.HTTP_200_OK)
 
     def delete(self, request, pk):

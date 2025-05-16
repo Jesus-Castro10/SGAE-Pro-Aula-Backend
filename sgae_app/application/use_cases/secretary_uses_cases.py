@@ -2,6 +2,7 @@ from sgae_app.domain.exceptions.exceptions import ResourceNotFoundException
 from sgae_app.domain.repositories.secretary_repository import SecretaryRepository
 from sgae_app.domain.entities.secretary import Secretary
 from auth_app.models import User
+from sgae_app.domain.utils.mapping import person_mapper
 
 class CreateSecretary:
     def __init__(self, repository: SecretaryRepository):
@@ -37,16 +38,14 @@ class UpdateSecretary:
     def __init__(self, repository: SecretaryRepository):
         self.repository = repository
 
-    def execute(self, secretary_id: int, first_name: str, last_name: str, email: str) -> Secretary:
-        secretary = self.repository.get_by_id(secretary_id)
-        if not secretary:
+    def execute(self, secretary_id: int, secretary_upd: Secretary) -> Secretary:
+        secretary_db = self.repository.get_by_id(secretary_id)
+        if not secretary_db:
             raise ResourceNotFoundException(f"Secretary with id {secretary_id} not found.")
 
-        secretary.first_name = first_name
-        secretary.first_lastname = last_name
-        secretary.email = email
-        self.repository.save(secretary)
-        return secretary
+        person_mapper(secretary_db, secretary_upd)
+        
+        return self.repository.save(secretary_db)
 
 
 class DeleteSecretary:

@@ -21,7 +21,9 @@ class DjangoAcademicCoordinatorRepository(AcademicCoordinatorRepository):
         return AcademicCoordinatorModel.objects.filter(email=email).exists()
 
     def delete(self, academic_coordinator_id: int) -> None:
-        AcademicCoordinatorModel.objects.filter(id=academic_coordinator_id).delete()
+        academic_coordinator = AcademicCoordinatorModel.objects.get(id=academic_coordinator_id)
+        academic_coordinator.user.delete()
+        academic_coordinator.delete()
 
     def get_all(self) -> list[AcademicCoordinator]:
         return [model.to_domain() for model in AcademicCoordinatorModel.objects.all()]

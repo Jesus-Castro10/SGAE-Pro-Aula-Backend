@@ -22,8 +22,8 @@ class DirectorService:
     def create_director(self, director: Director):
         return self.create_director_uc.execute(director)
 
-    def update_director(self, director_id, first_name, last_name, email):
-        return self.update_director_uc.execute(director_id, first_name, last_name, email)
+    def update_director(self, director_id, director: Director):
+        return self.update_director_uc.execute(director_id, director)
 
     def delete_director(self, director_id):
         return self.delete_director_uc.execute(director_id)

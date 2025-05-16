@@ -2,6 +2,7 @@ from sgae_app.domain.exceptions.exceptions import ResourceNotFoundException
 from sgae_app.domain.repositories.teacher_repository import TeacherRepository
 from sgae_app.domain.entities.teacher import Teacher
 from auth_app.models import User
+from sgae_app.domain.utils.mapping import person_mapper
 
 class CreateTeacher:
     def __init__(self, repository: TeacherRepository):
@@ -37,16 +38,14 @@ class UpdateTeacher:
     def __init__(self, repository: TeacherRepository):
         self.repository = repository
 
-    def execute(self, teacher_id: int, first_name: str, last_name: str, email: str) -> Teacher:
-        teacher = self.repository.get_by_id(teacher_id)
-        if not teacher:
+    def execute(self, teacher_id: int, update_data) -> Teacher:
+        teacher_db = self.repository.get_by_id(teacher_id)
+        if not teacher_db:
             raise ResourceNotFoundException(f"Teacher with id {teacher_id} not found.")
 
-        teacher.first_name = first_name
-        teacher.first_lastname = last_name
-        teacher.email = email
-        self.repository.save(teacher)
-        return teacher
+        person_mapper(teacher_db,update_data)
+        
+        return self.repository.save(teacher_db)
 
 
 class DeleteTeacher:

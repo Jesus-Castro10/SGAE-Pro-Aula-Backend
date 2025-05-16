@@ -30,10 +30,9 @@ class GuardianView(APIView):
         guardianSaved = self.guardian_service.create_guardian(guardian)
         return Response(GuardianDTO(guardianSaved).data, status=status.HTTP_201_CREATED)
 
-    def get(self, request, guardian_id=None):
-        if guardian_id:
-            guardian = self.guardian_service.get_guardian(guardian_id)
-            print("DEBUG type(gurdian.user):", type(guardian.user), "value:", guardian.user)
+    def get(self, request, pk=None):
+        if pk:
+            guardian = self.guardian_service.get_guardian(pk)
             return Response(GuardianDTO(guardian).data)
         else:
             guardians = self.guardian_service.get_all_guardians()
@@ -43,11 +42,11 @@ class GuardianView(APIView):
         data = GuardianDTO(data=request.data)
         if not data.is_valid():
             raise InvalidDataException(data.errors)
-        guardian = data.data
-        
+        serialized = data.data
+        guardian = Guardian(**serialized)
         updated_guardian = self.guardian_service.update_guardian(pk,guardian)
         return Response(GuardianDTO(updated_guardian).data, status=status.HTTP_200_OK)
 
-    def delete(self, request, guardian_id):
-        self.guardian_service.delete_guardian(guardian_id)
+    def delete(self, request, pk):
+        self.guardian_service.delete_guardian(pk)
         return Response("Tutor eliminado correctamente", status=status.HTTP_204_NO_CONTENT)

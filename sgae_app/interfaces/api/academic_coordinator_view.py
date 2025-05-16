@@ -23,10 +23,22 @@ class AcademicCoordinatorView(APIView):
         saved = self.academic_coordinator_service.create_academic_coordinator(coordinator)
         return Response(AcademicCoordinatorDTO(saved).data, status=status.HTTP_201_CREATED)
 
-    def get(self, request, academic_coordinator_id=None):
-        if academic_coordinator_id:
-            coordinator = self.academic_coordinator_service.get_academic_coordinator(academic_coordinator_id)
+    def get(self, request, pk=None):
+        if pk:
+            coordinator = self.academic_coordinator_service.get_academic_coordinator(pk)
             return Response(AcademicCoordinatorDTO(coordinator).data)
         else:
             coordinators = self.academic_coordinator_service.get_all_academic_coordinators()
             return Response(AcademicCoordinatorDTO(coordinators, many=True).data)
+        
+    def put(self, request, pk):
+        data = AcademicCoordinatorDTO(request.data)
+        serialized = data.data
+        coordinator = AcademicCoordinator(**serialized)
+
+        updated = self.academic_coordinator_service.update_academic_coordinator(pk, coordinator)
+        return Response(AcademicCoordinatorDTO(updated).data, status=status.HTTP_200_OK)
+    
+    def delete(self, request, pk):
+        self.academic_coordinator_service.delete_academic_coordinator(pk)
+        return Response("Director academico eliminado correctamente",status=status.HTTP_204_NO_CONTENT)

@@ -2,6 +2,7 @@ from sgae_app.domain.exceptions.exceptions import UserAlreadyExistsException, Re
 from sgae_app.domain.repositories.director_repository import DirectorRepository
 from sgae_app.domain.entities.director import Director
 from auth_app.models import User
+from sgae_app.domain.utils.mapping import person_mapper
 
 class CreateDirector:
     def __init__(self, repository: DirectorRepository):
@@ -37,16 +38,14 @@ class UpdateDirector:
     def __init__(self, repository: DirectorRepository):
         self.repository = repository
 
-    def execute(self, director_id: int, first_name: str, last_name: str, email: str) -> Director:
-        director = self.repository.get_by_id(director_id)
-        if not director:
+    def execute(self, director_id: int, update_data: Director) -> Director:
+        director_db = self.repository.get_by_id(director_id)
+        if not director_db:
             raise ResourceNotFoundException(f"Director with id {director_id} not found.")
 
-        director.first_name = first_name
-        director.first_lastname = last_name
-        director.email = email
-        self.repository.save(director)
-        return director
+        person_mapper(director_db,update_data)
+        
+        return self.repository.save(director_db)
 
 
 class DeleteDirector:

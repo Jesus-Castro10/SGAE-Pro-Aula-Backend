@@ -21,7 +21,9 @@ class DjangoSecretaryRepository(SecretaryRepository):
         return SecretaryModel.objects.filter(email=email).exists()
 
     def delete(self, secretary_id: int) -> None:
-        SecretaryModel.objects.filter(id=secretary_id).delete()
+        secretary = SecretaryModel.objects.get(id=secretary_id)
+        secretary.user.delete()
+        secretary.delete()
 
     def get_all(self) -> list[Secretary]:
         return [model.to_domain() for model in SecretaryModel.objects.all()]

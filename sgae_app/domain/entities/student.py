@@ -1,8 +1,10 @@
 from typing import Optional, List
+from dataclasses import dataclass
 from .base import Person
 from datetime import date
 from django.contrib.auth.models import User
 
+@dataclass
 class Student(Person):
     def __init__(
         self,

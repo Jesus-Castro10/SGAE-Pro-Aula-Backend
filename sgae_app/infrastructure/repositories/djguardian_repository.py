@@ -39,4 +39,6 @@ class DjangoGuardianRepository(GuardianRepository):
         ).exists()
 
     def delete(self, guardian_id: int) -> None:
-        GuardianModel.objects.filter(id=guardian_id).delete()
+        guardian = GuardianModel.objects.get(id=guardian_id)
+        guardian.user.delete()
+        guardian.delete()

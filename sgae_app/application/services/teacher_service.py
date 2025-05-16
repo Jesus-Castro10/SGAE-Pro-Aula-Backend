@@ -19,8 +19,8 @@ class TeacherService:
     def create_teacher(self, teacher: Teacher):
         return self.create_teacher_uc.execute(teacher)
 
-    def update_teacher(self, teacher_id, Teacher: Teacher):
-        return self.update_teacher_uc.execute(teacher_id, Teacher)
+    def update_teacher(self, teacher_id, teacher: Teacher):
+        return self.update_teacher_uc.execute(teacher_id, teacher)
 
     def delete_teacher(self, teacher_id):
         return self.delete_teacher_uc.execute(teacher_id)

@@ -21,7 +21,9 @@ class DjangoTeacherRepository(TeacherRepository):
         return TeacherModel.objects.filter(email=email).exists()
 
     def delete(self, teacher_id: int) -> None:
-        TeacherModel.objects.filter(id=teacher_id).delete()
+        teacher = TeacherModel.objects.get(id=teacher_id)
+        teacher.user.delete()
+        teacher.delete()
 
     def get_all(self) -> list[Teacher]:
         return [model.to_domain() for model in TeacherModel.objects.all()]

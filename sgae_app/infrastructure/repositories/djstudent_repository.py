@@ -36,9 +36,6 @@ class DjangoStudentRepository(StudentRepository):
         ).exists()
 
     def delete(self, student_id: int) -> None:
-        try:
-            student = StudentModel.objects.get(id=student_id)
-            student.user.delete()  # Elimina también el usuario asociado
-            student.delete()
-        except StudentModel.DoesNotExist:
-            pass
+        student = StudentModel.objects.get(id=student_id)
+        student.user.delete()
+        student.delete()
