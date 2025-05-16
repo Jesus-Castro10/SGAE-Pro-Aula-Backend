@@ -47,6 +47,6 @@ class PersonDTO(serializers.Serializer):
         allow_null=True
     )
     
-    #user = serializers.PrimaryKeyRelatedField(
-    #    queryset=User.objects.all(), required=False, allow_null=True
-    #)
+    user = serializers.PrimaryKeyRelatedField(
+        queryset=User.objects.all(), required=False, allow_null=True
+    )

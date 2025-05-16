@@ -33,6 +33,7 @@ class GuardianView(APIView):
     def get(self, request, guardian_id=None):
         if guardian_id:
             guardian = self.guardian_service.get_guardian(guardian_id)
+            print("DEBUG type(gurdian.user):", type(guardian.user), "value:", guardian.user)
             return Response(GuardianDTO(guardian).data)
         else:
             guardians = self.guardian_service.get_all_guardians()

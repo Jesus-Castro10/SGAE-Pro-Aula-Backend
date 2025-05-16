@@ -24,6 +24,7 @@ class GuardianModel(PersonModel):
 
     @classmethod
     def from_domain(cls, guardian: Guardian):
+        print("DEBUG guardian.user =", guardian.user, "TYPE =", type(guardian.user))
         instance = super().from_domain(guardian)
         instance.user = guardian.user
         return instance

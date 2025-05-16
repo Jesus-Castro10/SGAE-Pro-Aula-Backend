@@ -39,7 +39,7 @@ class Person:
         self.address = address
         self.phone = phone
         self.email = email
-        self.user = user,
+        self.user = user
         self.image = image
 
     def __str__(self):
