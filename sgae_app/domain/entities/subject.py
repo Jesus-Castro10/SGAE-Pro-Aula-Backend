@@ -7,3 +7,6 @@ class Subject:
         self.name = name
         self.code = code
         self.description = description
+
+    def __str__(self):
+        return f"Subject(id={self.id}, name={self.name}, code={self.code}, description={self.description})"

@@ -20,8 +20,8 @@ class SubjectService:
     def create_subject(self, subject: Subject) -> Subject:
         return self.create_subject_uc.execute(subject)
 
-    def update_subject(self, subject_id: int, name: str, code: str, description: str = "") -> Subject:
-        return self.update_subject_uc.execute(subject_id, name, code, description)
+    def update_subject(self, subject_id: int, subject: Subject) -> Subject:
+        return self.update_subject_uc.execute(subject_id, subject)
 
     def delete_subject(self, subject_id: int) -> Subject:
         return self.delete_subject_uc.execute(subject_id)

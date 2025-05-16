@@ -14,8 +14,8 @@ class SubjectModel(models.Model):
         return self.__str__()
 
     def to_domain(self):
-        return Subject(name=self.name, code=self.code, description=self.description)
+        return Subject(id=self.id,name=self.name, code=self.code, description=self.description)
 
     @classmethod
     def from_domain(cls, subject):
-        return cls(name=subject.name, code=subject.code, description=subject.description)
+        return cls(id=subject.id, name=subject.name, code=subject.code, description=subject.description)

@@ -40,12 +40,9 @@ class SubjectView(APIView):
         data = SubjectDTO(data=request.data)
         if not data.is_valid():
             raise InvalidDataException(data.errors)
-        updated = self.subject_service.update_subject(
-            pk,
-            name=data.validated_data["name"],
-            code=data.validated_data["code"],
-            description=data.validated_data.get("description", "")
-        )
+        serialized = data.data
+        subject = Subject(**serialized)
+        updated = self.subject_service.update_subject(pk, subject)
         return Response(SubjectDTO(updated).data, status=status.HTTP_200_OK)
 
     def delete(self, request, pk):

@@ -7,7 +7,7 @@ from sgae_app.infrastructure.models.subject import SubjectModel
 
 class DjangoSubjectRepository(SubjectRepository):
 
-    def get_by_id(self, subject_id: int) -> Any | None:
+    def get_by_id(self, subject_id: int) -> Subject | None:
         try:
             model = SubjectModel.objects.get(id=subject_id)
             return model.to_domain()
@@ -23,7 +23,7 @@ class DjangoSubjectRepository(SubjectRepository):
     def save(self, subject: Subject) -> Subject:
         model = SubjectModel.from_domain(subject)
         model.save()
-        return subject
+        return model.to_domain()
 
     def exists(self, subject: Subject) -> bool:
         return SubjectModel.objects.filter(code=subject.code).exists()
