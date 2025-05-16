@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from sgae_app.application.services.classroom_service import ClassRoomService
+from sgae_app.domain.entities.classroom import Classroom
 
 from dependency_injector.wiring import Provide
 from sgae_app.infrastructure.config.container import Container
@@ -23,7 +24,7 @@ class ClassroomView(APIView):
         data = ClassroomDTO(data=request.data)
         if not data.is_valid():
             raise InvalidDataException(data.errors)
-        classroom = classroom(**data.validated_data)
+        classroom = Classroom(**data.validated_data)
         classroom_saved = self.classroom_service.create(classroom)
         return Response(ClassroomDTO(classroom_saved).data, status=status.HTTP_201_CREATED)
 

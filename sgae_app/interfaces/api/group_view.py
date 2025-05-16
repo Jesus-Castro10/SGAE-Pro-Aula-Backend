@@ -24,7 +24,7 @@ class GroupView(APIView):
         data = GroupDTO(data=request.data)
         if not data.is_valid():
             raise InvalidDataException(data.errors)
-        group = group(**data.validated_data)
+        group = Group(**data.validated_data)
         group_saved = self.group_service.create(group)
         return Response(GroupDTO(group_saved).data, status=status.HTTP_201_CREATED)
 

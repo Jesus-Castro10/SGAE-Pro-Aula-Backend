@@ -1,4 +1,6 @@
 from sgae_app.domain.exceptions.exceptions import DuplicateKeyException, ResourceNotFoundException
+from sgae_app.infrastructure.models.student import StudentModel
+from sgae_app.infrastructure.models.group import GroupModel
 
 class CreateEnrollment:
     def __init__(self, repository):
@@ -7,6 +9,15 @@ class CreateEnrollment:
     def execute(self, enrollment):
         if self.repository.exists(enrollment):
             raise DuplicateKeyException("Enrollment already exists.")
+        
+        student = StudentModel.objects.get(id=enrollment.student)
+        group = GroupModel.objects.get(id=enrollment.group)
+        if not group:
+            raise ResourceNotFoundException("Group not found.")
+        if not student:
+            raise ResourceNotFoundException("Student not found.")
+        enrollment.student = student
+        enrollment.group = group
         return self.repository.save(enrollment)
 
 class GetEnrollment:

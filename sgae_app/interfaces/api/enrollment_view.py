@@ -25,7 +25,7 @@ class EnrollmentView(APIView):
         if not data.is_valid():
             raise InvalidDataException(data.errors)
         enrollment = Enrollment(**data.data)
-        enrollment_saved = self.enrollment_service.create_enrollment(enrollment)
+        enrollment_saved = self.enrollment_service.create(enrollment)
         return Response(EnrollmentDTO(enrollment_saved).data, status=status.HTTP_201_CREATED)
 
     def get(self, request, pk=None):

@@ -32,7 +32,7 @@ class DjangoEnrollmentRepository(EnrollmentRepository):
         return updated.to_domain()
 
     def exists(self, enrollment: Enrollment) -> bool:
-        return EnrollmentModel.objects.filter(student_id=enrollment.student.id, academic_year=enrollment.academic_year).exists()
+        return EnrollmentModel.objects.filter(student_id=enrollment.student, academic_year=enrollment.academic_year).exists()
 
     def delete(self, enrollment_id: int) -> None:
         EnrollmentModel.objects.filter(id=enrollment_id).delete()

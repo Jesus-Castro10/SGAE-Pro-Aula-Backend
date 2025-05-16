@@ -8,7 +8,7 @@ class EnrollmentDTO(serializers.Serializer):
     group = serializers.PrimaryKeyRelatedField(queryset=GroupModel.objects.all(), required=False, allow_null=True)
     enrollment_date = serializers.DateField()
     status = serializers.ChoiceField(choices=['active', 'inactive'], default='active')
-    academic_year = serializers.CharField(max_length=255, required=False, allow_blank=True)
+    academic_year = serializers.IntegerField(required=False)
     observations = serializers.CharField(max_length=255, required=False, allow_blank=True)
 
     def __init__(self, *args, **kwargs):

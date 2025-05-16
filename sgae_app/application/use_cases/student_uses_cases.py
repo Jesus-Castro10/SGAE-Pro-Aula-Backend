@@ -27,7 +27,7 @@ class CreateStudent:
             user.set_password(student.id_card)
             user.save()
             student.user = user
-            guardian = GuardianModel.objects.get(id=1)
+            guardian = GuardianModel.objects.get(id=student.guardian)
             student.guardian = guardian
             self.repository.save(student)
         except Exception as e:
