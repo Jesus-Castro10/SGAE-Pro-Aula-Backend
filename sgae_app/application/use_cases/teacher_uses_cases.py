@@ -5,29 +5,40 @@ from auth_app.models import User
 from sgae_app.domain.exceptions.exceptions import (DuplicateKeyException,
     ResourceNotFoundException, UserAlreadyExistsException)
 
+from sgae_app.application.services.email_sender_service import EmailSenderService
+from sgae_app.application.services.user_registration_notifier import UserRegistrationNotifier
+
 class CreateTeacher:
-    def __init__(self, repository: TeacherRepository):
+    def __init__(self, repository: TeacherRepository, email_sender_service: EmailSenderService):
         self.repository = repository
+        self.email_sender_service = email_sender_service
 
     def execute(
         self,
         teacher: Teacher
     ) -> Teacher:
         if self.repository.exists(teacher):
-            raise UserAlreadyExistsException(f"Teacher already exists check the id card or email.")
+            raise UserAlreadyExistsException("Teacher already exists. Check the ID card or email.")
         
         try:
             user = User.objects.create(
                 username=teacher.email,
                 user_type='teacher'
-            ) #Create service to create user
+            )
             user.set_password(teacher.id_card)
             user.save()
             teacher.user = user
             self.repository.save(teacher)
         except Exception as e:
-            user.delete()
+            try:
+                user.delete()
+            except Exception:
+                pass
             raise DuplicateKeyException(errors={str(e)})
+
+        # Notificar registro de usuario (enviar correo)
+        notifier = UserRegistrationNotifier(self.email_sender_service)
+        notifier.notify_user(teacher)
         return teacher
 
 class GetTeacher:

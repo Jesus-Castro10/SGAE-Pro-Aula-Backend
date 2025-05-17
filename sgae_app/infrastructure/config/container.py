@@ -131,9 +131,12 @@ class Container(containers.DeclarativeContainer):
     )
 
     # Guardian dependencies
+    email_sender_service = providers.Singleton(
+        lambda: __import__('sgae_app.application.services.email_sender_service', fromlist=['EmailSenderService']).EmailSenderService()
+    )
     guardian_repository = providers.Callable(DjangoGuardianRepository)
 
-    create_guardian_use_case = providers.Factory(CreateGuardian, repository=guardian_repository)
+    create_guardian_use_case = providers.Factory(CreateGuardian, repository=guardian_repository, email_sender_service=email_sender_service)
     update_guardian_use_case = providers.Factory(UpdateGuardian, repository=guardian_repository)
     delete_guardian_use_case = providers.Factory(DeleteGuardian, repository=guardian_repository)
     get_guardian_use_case = providers.Factory(GetGuardian, repository=guardian_repository)
@@ -150,8 +153,14 @@ class Container(containers.DeclarativeContainer):
 
     # Teacher dependencies
     teacher_repository = providers.Callable(DjangoTeacherRepository)
-
-    create_teacher_use_case = providers.Factory(CreateTeacher, repository=teacher_repository)
+    email_sender_service = providers.Singleton(
+        lambda: __import__('sgae_app.application.services.email_sender_service', fromlist=['EmailSenderService']).EmailSenderService()
+    )
+    create_teacher_use_case = providers.Factory(
+        CreateTeacher,
+        repository=teacher_repository,
+        email_sender_service=email_sender_service
+    )
     update_teacher_use_case = providers.Factory(UpdateTeacher, repository=teacher_repository)
     delete_teacher_use_case = providers.Factory(DeleteTeacher, repository=teacher_repository)
     get_teacher_use_case = providers.Factory(GetTeacher, repository=teacher_repository)

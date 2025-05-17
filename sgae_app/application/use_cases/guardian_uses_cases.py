@@ -5,9 +5,13 @@ from auth_app.models import User
 from sgae_app.domain.exceptions.exceptions import (DuplicateKeyException,
     ResourceNotFoundException, UserAlreadyExistsException)
 
+from sgae_app.application.services.email_sender_service import EmailSenderService
+from sgae_app.application.services.user_registration_notifier import UserRegistrationNotifier
+
 class CreateGuardian:
-    def __init__(self, repository: GuardianRepository):
+    def __init__(self, repository: GuardianRepository, email_sender_service: EmailSenderService):
         self.repository = repository
+        self.notifier = UserRegistrationNotifier(email_sender_service)
 
     def execute(
         self,
@@ -20,7 +24,7 @@ class CreateGuardian:
             user = User.objects.create(
                 username=guardian.email,
                 user_type='guardian'
-            ) #Create service to create user
+            ) 
             user.set_password(guardian.id_card)
             user.save()
             guardian.user = user
@@ -28,6 +32,9 @@ class CreateGuardian:
         except Exception as e:
             user.delete()
             raise DuplicateKeyException(errors={str(e)})
+
+        # Notificar registro de usuario (enviar correo)
+        self.notifier.notify_user(guardian)
         return guardian
 
 class GetGuardian:

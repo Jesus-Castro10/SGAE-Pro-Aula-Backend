@@ -5,22 +5,24 @@ from auth_app.models import User
 from sgae_app.domain.exceptions.exceptions import (DuplicateKeyException,
     ResourceNotFoundException, UserAlreadyExistsException)
 
-class CreateStudent:
-    def __init__(self, repository: StudentRepository):
-        self.repository = repository
+from sgae_app.application.services.email_sender_service import EmailSenderService
+from sgae_app.application.services.user_registration_notifier import UserRegistrationNotifier
 
-    def execute(
-        self,
-        student: Student
-    ) -> Student:
+from sgae_app.application.services.user_registration_notifier import UserRegistrationNotifier
+
+class CreateStudent:
+    def __init__(self, repository: StudentRepository, email_sender_service):
+        self.repository = repository
+        self.notifier = UserRegistrationNotifier(email_sender_service)
+
+    def execute(self, student: Student) -> Student:
         if self.repository.exists(student):
-            raise UserAlreadyExistsException(f"Student already exists check the id card or email.")
-        
+            raise UserAlreadyExistsException("Student already exists check the id card or email.")
         try:
             user = User.objects.create(
                 username=student.email,
                 user_type='student'
-            ) #Create service to create user
+            )
             user.set_password(student.id_card)
             user.save()
             student.user = user
@@ -28,6 +30,9 @@ class CreateStudent:
         except Exception as e:
             user.delete()
             raise DuplicateKeyException(errors={str(e)})
+
+        # Notificar registro de usuario (enviar correo)
+        self.notifier.notify_user(student)
         return student
 
 class GetStudent:
