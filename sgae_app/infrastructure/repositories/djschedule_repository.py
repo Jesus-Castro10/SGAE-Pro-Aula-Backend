@@ -19,12 +19,6 @@ class DjangoScheduleRepository(ScheduleRepository):
         model.save()
         return model.to_domain()
 
-    def update(self, schedule_id: int, schedule: Schedule) -> Schedule:
-        existing = ScheduleModel.objects.get(id=schedule_id)
-        updated = ScheduleModel.from_domain(schedule)
-        updated.id = existing.id
-        updated.save()
-        return updated.to_domain()
 
     def exists(self, schedule: Schedule) -> bool:
         return ScheduleModel.objects.filter(id=schedule.id).exists()

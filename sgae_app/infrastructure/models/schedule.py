@@ -6,6 +6,18 @@ class ScheduleModel(models.Model):
         primary_key=True,
         verbose_name='ID'
     )
+
+    code = models.CharField(
+        max_length=10,
+        verbose_name='Código',
+        unique=True
+    )
+
+    name = models.CharField(
+        max_length=100,
+        verbose_name='Nombre',
+        unique=True
+    )
     
     class Meta:
         verbose_name = 'Horario'
@@ -16,8 +28,8 @@ class ScheduleModel(models.Model):
     
     def to_domain(self):
         items = list(self.items.all())
-        return Schedule(id=self.id, items=items)
+        return Schedule(id=self.id,code=self.code,name=self.name,items=items)
 
     @classmethod
-    def from_domain(cls, subject):
-        return cls(id=subject.id, items=subject.items)
+    def from_domain(cls, schedule):
+        return cls(id=schedule.id,code=schedule.code,name=schedule.name)

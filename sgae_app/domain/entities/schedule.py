@@ -1,7 +1,9 @@
 class Schedule:
-    def __init__(self, id: int = None, items: list = None):
+    def __init__(self, id: int ,code: str, name: str, items: list = None):
         self.id = id
-        self.items = items # Optional: List of ScheduleItems
+        self.code = code
+        self.name = name
+        self.items = items
 
     def add_item(self, item):
         self.items.append(item)
