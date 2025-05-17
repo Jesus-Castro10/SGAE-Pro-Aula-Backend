@@ -19,13 +19,6 @@ class DjangoClassRoomRepository(ClassRoomRepository):
         model.save()
         return model.to_domain()
 
-    def update(self, classroom_id: int, classroom: Classroom) -> Classroom:
-        existing = ClassRoomModel.objects.get(id=classroom_id)
-        updated = ClassRoomModel.from_domain(classroom)
-        updated.id = existing.id
-        updated.save()
-        return updated.to_domain()
-
     def exists(self, classroom: Classroom) -> bool:
         return ClassRoomModel.objects.filter(name=classroom.name).exists()
 

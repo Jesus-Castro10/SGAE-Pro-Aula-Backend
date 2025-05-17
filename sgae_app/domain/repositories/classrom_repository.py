@@ -10,9 +10,6 @@ class ClassRoomRepository:
     def save(self, classroom: Classroom) -> Classroom:
         raise NotImplementedError
 
-    def update(self, classroom_id: int, classroom: Classroom) -> Classroom:
-        raise NotImplementedError
-
     def exists(self, classroom: Classroom) -> bool:
         raise NotImplementedError
 

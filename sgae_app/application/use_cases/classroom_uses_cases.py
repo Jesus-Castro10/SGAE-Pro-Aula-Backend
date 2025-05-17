@@ -1,5 +1,5 @@
 from sgae_app.domain.exceptions.exceptions import DuplicateKeyException, ResourceNotFoundException
-
+from sgae_app.domain.utils.mapping import mapper as classroom_mapper
 
 class CreateClassroom:
     def __init__(self, repository):
@@ -35,10 +35,12 @@ class UpdateClassroom:
         self.repository = repository
 
     def execute(self, classroom_id: int, classroom):
-        if not self.repository.get_by_id(classroom_id):
+        classroom_db = self.repository.get_by_id(classroom_id)
+        if not classroom_db:
             raise ResourceNotFoundException("Classroom not found.")
-        classroom.id = classroom_id
-        return self.repository.update(classroom_id, classroom)
+        
+        classroom_mapper(classroom_db, classroom, fields=["name", "capacity", "registered_at"])
+        return self.repository.save(classroom_db)
 
 class DeleteClassroom:
     def __init__(self, repository):

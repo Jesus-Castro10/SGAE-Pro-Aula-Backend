@@ -10,15 +10,13 @@ class ClassRoomModel(models.Model):
     class Meta:
         verbose_name = 'Aula'
         verbose_name_plural = 'Aulas'
-        ordering = ['name']
-        unique_together = ('name',)
 
     def __str__(self):
-        return f"{self.name} - {self.capacity}"
+        return f"{self.id} {self.name} - {self.capacity}"
     
     def to_domain(self):
         return Classroom(id=self.id, name=self.name, capacity=self.capacity, registered_at=self.registered_at)
 
     @classmethod
-    def from_domain(cls, subject):
-        return cls(id=subject.id, name=subject.name, capacity=subject.capacity, registered_at=subject.registered_at)
+    def from_domain(cls, classroom):
+        return cls(id=classroom.id, name=classroom.name, capacity=classroom.capacity, registered_at=classroom.registered_at)

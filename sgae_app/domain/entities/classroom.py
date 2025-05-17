@@ -11,3 +11,6 @@ class Classroom:
         self.name = name
         self.capacity = capacity
         self.registered_at = registered_at
+
+    def __str__(self):
+        return f"Aula(id={self.id}, name='{self.name}', capacity={self.capacity}, registered_at={self.registered_at})"

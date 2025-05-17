@@ -40,14 +40,10 @@ class ClassroomView(APIView):
         data = ClassroomDTO(data=request.data)
         if not data.is_valid():
             raise InvalidDataException(data.errors)
-        updated = self.classroom_service.update(
-            pk,
-            name=data.validated_data["name"],
-            code=data.validated_data["code"],
-            description=data.validated_data.get("description", "")
-        )
+        classroom = Classroom(**data.validated_data)
+        updated = self.classroom_service.update(pk, classroom)
         return Response(ClassroomDTO(updated).data, status=status.HTTP_200_OK)
 
     def delete(self, request, pk):
         self.classroom_service.delete(pk)
-        return Response("Asignatura eliminada correctamente", status=status.HTTP_204_NO_CONTENT)
+        return Response("Aula eliminada correctamente", status=status.HTTP_204_NO_CONTENT)
