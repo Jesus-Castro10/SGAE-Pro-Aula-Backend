@@ -19,13 +19,6 @@ class DjangoGroupRepository(GroupRepository):
         model.save()
         return model.to_domain()
 
-    def update(self, group_id: int, group: Group) -> Group:
-        existing = GroupModel.objects.get(id=group_id)
-        updated = GroupModel.from_domain(group)
-        updated.id = existing.id
-        updated.save()
-        return updated.to_domain()
-
     def exists(self, group: Group) -> bool:
         return GroupModel.objects.filter(name=group.name, year=group.year, section=group.section).exists()
 

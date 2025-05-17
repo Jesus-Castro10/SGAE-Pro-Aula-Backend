@@ -40,14 +40,10 @@ class GroupView(APIView):
         data = GroupDTO(data=request.data)
         if not data.is_valid():
             raise InvalidDataException(data.errors)
-        updated = self.group_service.update(
-            pk,
-            name=data.validated_data["name"],
-            code=data.validated_data["code"],
-            description=data.validated_data.get("description", "")
-        )
+        group = Group(**data.validated_data)
+        updated = self.group_service.update(pk,group)
         return Response(GroupDTO(updated).data, status=status.HTTP_200_OK)
 
     def delete(self, request, pk):
         self.group_service.delete(pk)
-        return Response("Asignatura eliminada correctamente", status=status.HTTP_204_NO_CONTENT)
+        return Response("Grupo eliminado correctamente", status=status.HTTP_204_NO_CONTENT)

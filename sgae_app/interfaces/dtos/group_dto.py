@@ -7,5 +7,5 @@ class GroupDTO(serializers.Serializer):
     year = serializers.CharField(max_length=10)
     section = serializers.CharField(max_length=255, required=False, allow_blank=True)
     shift = serializers.CharField(max_length=255, required=False, allow_blank=True)
-    registered_at = serializers.DateTimeField(read_only=True)
+    registered_at = serializers.DateTimeField()
     schedule = serializers.PrimaryKeyRelatedField(queryset=ScheduleModel.objects.all(), required=False, allow_null=True)

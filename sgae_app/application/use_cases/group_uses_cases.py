@@ -1,4 +1,5 @@
 from sgae_app.domain.exceptions.exceptions import DuplicateKeyException, ResourceNotFoundException
+from sgae_app.domain.utils.mapping import mapper as group_mapper
 
 class CreateGroup:
     def __init__(self, repository):
@@ -33,11 +34,12 @@ class UpdateGroup:
     def __init__(self, repository):
         self.repository = repository
 
-    def execute(self, group_id: int, group):
-        if not self.repository.get_by_id(group_id):
+    def execute(self, group_id: int, update_data):
+        group_db = self.repository.get_by_id(group_id)
+        if not group_db:
             raise ResourceNotFoundException("Group not found.")
-        group.id = group_id
-        return self.repository.update(group_id, group)
+        group_mapper(group_db, update_data, fields=["name", "year","section","shift","registered_at"])
+        return self.repository.save(group_db)
 
 class DeleteGroup:
     def __init__(self, repository):
