@@ -11,16 +11,7 @@ class CreateTeacher:
     def execute(self, teacher: Teacher) -> Teacher:
         if self.repository.exists(teacher.email):
             raise ResourceNotFoundException(f"Teacher with email {teacher.email} already exists.")
-
-        user = User.objects.create(
-            username=teacher.email,
-            password=teacher.id_card,
-            user_type='teacher'
-        )
-
-        teacher.user = user
-        self.repository.save(teacher)
-        return teacher
+        return self.repository.save(teacher)
 
 
 class GetTeacher:

@@ -1,4 +1,4 @@
-from sgae_app.domain.exceptions.exceptions import ResourceNotFoundException
+from sgae_app.domain.exceptions.exceptions import ResourceNotFoundException, UserAlreadyExistsException
 from sgae_app.domain.repositories.secretary_repository import SecretaryRepository
 from sgae_app.domain.entities.secretary import Secretary
 from auth_app.models import User
@@ -10,17 +10,8 @@ class CreateSecretary:
 
     def execute(self, secretary: Secretary) -> Secretary:
         if self.repository.exists(secretary.email):
-            raise ResourceNotFoundException(f"Secretary with email {secretary.email} already exists.")
-
-        user = User.objects.create(
-            username=secretary.email,
-            password=secretary.id_card,
-            user_type='secretary'
-        )
-
-        secretary.user = user
-        self.repository.save(secretary)
-        return secretary
+            raise UserAlreadyExistsException(f"Secretary with email {secretary.email} already exists.")
+        return self.repository.save(secretary)
 
 
 class GetSecretary:

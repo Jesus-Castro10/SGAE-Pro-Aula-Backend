@@ -16,20 +16,7 @@ class CreateGuardian:
     ) -> Guardian:
         if self.repository.exists(guardian):
             raise UserAlreadyExistsException(f"Guardian already exists check the id card or email.")
-        
-        try:
-            user = User.objects.create(
-                username=guardian.email,
-                user_type='guardian'
-            ) #Create service to create user
-            user.set_password(guardian.id_card)
-            user.save()
-            guardian.user = user
-            self.repository.save(guardian)
-        except Exception as e:
-            user.delete()
-            raise DuplicateKeyException(errors={str(e)})
-        return guardian
+        return self.repository.save(guardian)
 
 class GetGuardian:
     def __init__(self, repository: GuardianRepository):

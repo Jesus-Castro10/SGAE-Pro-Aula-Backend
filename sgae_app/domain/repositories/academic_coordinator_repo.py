@@ -11,11 +11,11 @@ class AcademicCoordinatorRepository:
     def save(self, academic_coordinator: AcademicCoordinator) -> AcademicCoordinator:
         raise NotImplementedError
 
-    def update(self, academic_coordinator: AcademicCoordinator) -> AcademicCoordinator:
-        raise NotImplementedError
-
     def delete(self, academic_coordinator_id: int) -> None:
         raise NotImplementedError
-
-    def exists(self, email: str) -> bool:
+    
+    def get_by_email(self, email: str) -> AcademicCoordinator:
+        raise NotImplementedError
+    
+    def get_by_id_card(self, id_card: str) -> AcademicCoordinator:
         raise NotImplementedError

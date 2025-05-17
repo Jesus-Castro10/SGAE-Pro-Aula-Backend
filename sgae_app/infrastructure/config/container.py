@@ -13,6 +13,7 @@ from sgae_app.application.services.grade_service import GradeService
 from sgae_app.application.services.group_service import GroupService
 from sgae_app.application.services.classroom_service import ClassRoomService
 from sgae_app.application.services.schedule_service import ScheduleService
+from sgae_app.application.services.user_creator_service import UserCreatorService
 
 from sgae_app.infrastructure.repositories.djacademic_coordi_repo import DjangoAcademicCoordinatorRepository
 from sgae_app.infrastructure.repositories.djdirector_repository import DjangoDirectorRepository
@@ -48,6 +49,7 @@ from sgae_app.application.services.schedule_item_service import ScheduleItemServ
 class Container(containers.DeclarativeContainer):
 
     config = providers.Configuration()
+    user_creator_service = providers.Factory(UserCreatorService)
 
     # Student Dependencies
     student_repository = providers.Callable(DjangoStudentRepository)
@@ -65,6 +67,7 @@ class Container(containers.DeclarativeContainer):
         delete_student_uc=delete_student_use_case,
         get_student_uc=get_student_use_case,
         get_all_students_uc=get_all_students_use_case,
+        user_creator=user_creator_service,
     )
 
     # Secretary Dependencies
@@ -83,6 +86,7 @@ class Container(containers.DeclarativeContainer):
         delete_secretary_uc=delete_secretary_use_case,
         get_secretary_uc=get_secretary_use_case,
         get_all_secretaries_uc=get_all_secretaries_use_case,
+        user_creator=user_creator_service,
     )
     
     # Guardian Dependencies
@@ -101,6 +105,7 @@ class Container(containers.DeclarativeContainer):
         delete_guardian_uc=delete_guardian_use_case,
         get_guardian_uc=get_guardian_use_case,
         get_all_guardians_uc=get_all_guardians_use_case,
+        user_creator=user_creator_service,
     )
 
     #Academic Coordinator Dependencies
@@ -119,6 +124,7 @@ class Container(containers.DeclarativeContainer):
         delete_academic_coordinator_uc=delete_academic_coordinator_use_case,
         get_academic_coordinator_uc=get_academic_coordinator_use_case,
         get_all_academic_coordinators_uc=get_all_academic_coordinators_use_case,
+        user_creator=user_creator_service,
     )
 
     # Director dependencies
@@ -137,6 +143,7 @@ class Container(containers.DeclarativeContainer):
         delete_director_uc=delete_director_use_case,
         get_director_uc=get_director_use_case,
         get_all_directors_uc=get_all_directors_use_case,
+        user_creator=user_creator_service,
     )
 
     # Teacher dependencies
@@ -155,6 +162,7 @@ class Container(containers.DeclarativeContainer):
         delete_teacher_uc=delete_teacher_use_case,
         get_teacher_uc=get_teacher_use_case,
         get_all_teachers_uc=get_all_teachers_use_case,
+        user_creator=user_creator_service,
     )
     
     #Subject dependencies

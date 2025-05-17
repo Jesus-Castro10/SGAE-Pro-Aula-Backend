@@ -11,16 +11,7 @@ class CreateDirector:
     def execute(self, director: Director) -> Director:
         if self.repository.exists(director.email):
             raise UserAlreadyExistsException(f"Director with email {director.email} already exists.")
-
-        user = User.objects.create(
-            username=director.email,
-            password=director.id_card,
-            user_type='director'
-        )
-
-        director.user = user
-        self.repository.save(director)
-        return director
+        return self.repository.save(director)
 
 
 class GetDirector:

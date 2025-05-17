@@ -8,19 +8,19 @@ class CreateAcademicCoordinator:
     def __init__(self, repository: AcademicCoordinatorRepository):
         self.repository = repository
 
+    def _exists(self, academic_coordinator: AcademicCoordinator) -> None:
+        if self.repository.get_by_id_card(academic_coordinator.id_card):
+            academic_coordinator.user.delete()
+            raise UserAlreadyExistsException(
+                f"AcademicCoordinator with id card {academic_coordinator.id_card} already exists."
+            )
+
     def execute(self, academic_coordinator: AcademicCoordinator) -> AcademicCoordinator:
-        if self.repository.exists(academic_coordinator.email):
-            raise UserAlreadyExistsException(f"AcademicCoordinator with email {academic_coordinator.email} already exists.")
+        self._exists(academic_coordinator)
+        return self.repository.save(academic_coordinator)
 
-        user = User.objects.create(
-            username=academic_coordinator.email,
-            password=academic_coordinator.id_card,
-            user_type='academic_coordinator'
-        )
-
-        academic_coordinator.user = user
-        self.repository.save(academic_coordinator)
-        return academic_coordinator
+    
+    
 
 
 class GetAcademicCoordinator:
