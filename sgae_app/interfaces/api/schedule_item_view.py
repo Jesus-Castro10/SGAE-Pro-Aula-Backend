@@ -24,7 +24,7 @@ class ScheduleItemView(APIView):
         data = ScheduleItemDTO(data=request.data)
         if not data.is_valid():
             raise InvalidDataException(data.errors)
-        scheduleItem = scheduleItem(**data.validated_data)
+        scheduleItem = ScheduleItem(**data.validated_data)
         scheduleItem_saved = self.schedule_item_service.create(scheduleItem)
         return Response(ScheduleItemDTO(scheduleItem_saved).data, status=status.HTTP_201_CREATED)
 
@@ -40,14 +40,10 @@ class ScheduleItemView(APIView):
         data = ScheduleItemDTO(data=request.data)
         if not data.is_valid():
             raise InvalidDataException(data.errors)
-        updated = self.schedule_item_service.update(
-            pk,
-            name=data.validated_data["name"],
-            code=data.validated_data["code"],
-            description=data.validated_data.get("description", "")
-        )
+        scheduleItem = ScheduleItem(**data.validated_data)
+        updated = self.schedule_item_service.update(pk,scheduleItem)
         return Response(ScheduleItemDTO(updated).data, status=status.HTTP_200_OK)
 
     def delete(self, request, pk):
         self.schedule_item_service.delete(pk)
-        return Response("Asignatura eliminada correctamente", status=status.HTTP_204_NO_CONTENT)
+        return Response("Item de horario eliminado correctamente", status=status.HTTP_204_NO_CONTENT)

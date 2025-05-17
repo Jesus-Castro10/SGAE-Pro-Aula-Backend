@@ -1,4 +1,5 @@
 from sgae_app.domain.exceptions.exceptions import DuplicateKeyException, ResourceNotFoundException
+from sgae_app.domain.utils.mapping import mapper
 
 class CreateScheduleItem:
     def __init__(self, repository):
@@ -33,11 +34,12 @@ class UpdateScheduleItem:
     def __init__(self, repository):
         self.repository = repository
 
-    def execute(self, id: int, scheduleItem):
-        if not self.repository.get_by_id(id):
+    def execute(self, id: int, update_data):
+        schedule_item_db = self.repository.get_by_id(id)
+        if not schedule_item_db:
             raise ResourceNotFoundException("ScheduleItem not found.")
-        scheduleItem.id = id
-        return self.repository.update(id, scheduleItem)
+        mapper(schedule_item_db, update_data, ['start_time', 'end_time', 'day_of_week'])
+        return self.repository.save(schedule_item_db)
 
 class DeleteScheduleItem:
     def __init__(self, repository):

@@ -18,3 +18,6 @@ class ScheduleItem:
 
     def duration_minutes(self):
         return (datetime.combine(date.today(), self.end_time) - datetime.combine(date.today(), self.start_time)).seconds // 60
+
+    def __str__(self):
+        return f"ScheduleItem(id={self.id}, schedule={self.schedule}, subject_assignment={self.subject_assignment}, day_of_week='{self.day_of_week}', start_time={self.start_time}, end_time={self.end_time})"

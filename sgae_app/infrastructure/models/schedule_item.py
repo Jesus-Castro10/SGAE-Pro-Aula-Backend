@@ -35,8 +35,6 @@ class ScheduleItemModel(models.Model):
     class Meta:
         verbose_name = 'Horario'
         verbose_name_plural = 'Horarios'
-        ordering = ['day_of_week', 'start_time']
-        unique_together = ('subject_assignment', 'day_of_week', 'start_time')
 
     def __str__(self):
         sa = self.subject_assignment

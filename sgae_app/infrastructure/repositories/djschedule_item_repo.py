@@ -7,7 +7,7 @@ class DjangoScheduleItemRepository(ScheduleItemRepository):
 
     def get_by_id(self, scheduleItem_id: int) -> Optional[ScheduleItem]:
         try:
-            return ScheduleItemModel.objects.select_related('teacher', 'subject', 'group', 'classroom').get(id=scheduleItem_id).to_domain()
+            return ScheduleItemModel.objects.select_related('subject_assignment', 'schedule').get(id=scheduleItem_id).to_domain()
         except ScheduleItemModel.DoesNotExist:
             return None
 
@@ -24,23 +24,14 @@ class DjangoScheduleItemRepository(ScheduleItemRepository):
         ]
 
     def save(self, scheduleItem: ScheduleItem) -> ScheduleItem:
+        print(f"Saving schedule item: {scheduleItem}")
         model = ScheduleItemModel.from_domain(scheduleItem)
         model.save()
         return model.to_domain()
 
-    def update(self, id: int, scheduleItem: ScheduleItem) -> ScheduleItem:
-        existing = ScheduleItemModel.objects.get(id=id)
-        updated = ScheduleItemModel.from_domain(scheduleItem)
-        updated.id = existing.id
-        updated.save()
-        return updated.to_domain()
-
     def exists(self, scheduleItem: ScheduleItem) -> bool:
         return ScheduleItemModel.objects.filter(
-            teacher=scheduleItem.teacher.id,
-            subject=scheduleItem.subject.id,
-            group=scheduleItem.group.id,
-            academic_year=scheduleItem.academic_year
+            id=scheduleItem.id
         ).exists()
 
     def delete(self, scheduleItem_id: int) -> None:
