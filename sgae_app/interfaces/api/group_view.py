@@ -14,7 +14,7 @@ from sgae_app.domain.exceptions.exceptions import InvalidDataException
 class GroupView(APIView):
     def __init__(
         self,
-        group_service: GroupService = Provide[Container.group_service],
+        group_service: GroupService = Provide[Container.group.group_service],
         **kwargs
     ):
         super().__init__(**kwargs)

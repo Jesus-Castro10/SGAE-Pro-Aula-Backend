@@ -13,14 +13,8 @@ class SgaeAppConfig(AppConfig):
         global container
         container = Container()
         container.config.from_dict(settings.__dict__)
-        container.wire(modules=[".interfaces.api.student_view"])
-        container.wire(modules=[".interfaces.api.secretary_view"])
-        container.wire(modules=[".interfaces.api.academic_coordinator_view"])
-        container.wire(modules=[".interfaces.api.director_view"])
-        container.wire(modules=[".interfaces.api.teacher_view"])
-        container.wire(modules=[".interfaces.api.subject_view"])
-        container.wire(modules=[".interfaces.api.enrollment_view"])
-        container.wire(modules=[".interfaces.api.group_view"])
-        container.wire(modules=[".interfaces.api.schedule_view"])
-        container.wire(modules=[".interfaces.api.schedule_item_view"])
-        container.wire(modules=[".interfaces.api.classroom_view"])
+
+        container.wire(packages=[
+            "sgae_app.interfaces.api",
+            "sgae_app.application.services"
+        ])

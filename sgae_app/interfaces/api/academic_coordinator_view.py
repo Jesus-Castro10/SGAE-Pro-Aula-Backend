@@ -10,7 +10,7 @@ from sgae_app.domain.entities.academic_coordinator import AcademicCoordinator
 
 class AcademicCoordinatorView(APIView):
     def __init__(self,
-                 academic_coordinator_service: AcademicCoordinatorService = Provide[Container.academic_coordinator_service],
+                 academic_coordinator_service: AcademicCoordinatorService = Provide[Container.academic_coordinator.academic_coordinator_service],
                  **kwargs):
         super().__init__(**kwargs)
         self.academic_coordinator_service = academic_coordinator_service

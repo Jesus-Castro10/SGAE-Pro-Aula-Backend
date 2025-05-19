@@ -12,7 +12,7 @@ from sgae_app.domain.exceptions.exceptions import InvalidDataException
 
 class SecretaryView(APIView):
     def __init__(self,
-                 secretary_service: SecretaryService = Provide[Container.secretary_service],
+                 secretary_service: SecretaryService = Provide[Container.secretary.secretary_service],
                  **kwargs):
         super().__init__(**kwargs)
         self.secretary_service = secretary_service

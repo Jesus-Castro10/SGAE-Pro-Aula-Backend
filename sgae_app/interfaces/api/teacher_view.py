@@ -13,7 +13,7 @@ from sgae_app.domain.exceptions.exceptions import InvalidDataException
 
 class TeacherView(APIView):
     def __init__(self, 
-                 teacher_service: TeacherService = Provide[Container.teacher_service],
+                 teacher_service: TeacherService = Provide[Container.teacher.teacher_service],
                  **kwargs):
         super().__init__(**kwargs)
         

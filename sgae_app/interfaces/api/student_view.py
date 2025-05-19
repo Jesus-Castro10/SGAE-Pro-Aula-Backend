@@ -14,7 +14,7 @@ from sgae_app.interfaces.dtos.response_dto import serialize
 
 class StudentView(APIView):
     def __init__(self, 
-                 student_service : StudentService = Provide[Container.student_service],
+                 student_service : StudentService = Provide[Container.student.student_service],
                  **kwargs):
         super().__init__(**kwargs)
         
@@ -25,9 +25,7 @@ class StudentView(APIView):
         if not data.is_valid():
             raise InvalidDataException(data.errors)
         serialized = data.validated_data
-        print(f"Serialized data: {serialized}")
         student = Student(**serialized)
-        print(f"Student: {student}")
         studentSaved = self.student_service.create_student(student)
         return Response(StudentDTO(studentSaved).data, status=status.HTTP_201_CREATED)
 

@@ -159,12 +159,7 @@ LOGGING = {
     },
 }
 
-SUPABASE = {
-    'URL': config('SUPABASE_URL'),
-    'KEY': config('SUPABASE_KEY'),
-    'BUCKET_NAME': config('SUPABASE_BUCKET_NAME', default='sgaeimages'),
-}
-
+# Email configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587

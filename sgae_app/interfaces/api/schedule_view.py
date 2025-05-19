@@ -14,7 +14,7 @@ from sgae_app.domain.exceptions.exceptions import InvalidDataException
 class ScheduleView(APIView):
     def __init__(
         self,
-        schedule_service: ScheduleService = Provide[Container.schedule_service],
+        schedule_service: ScheduleService = Provide[Container.schedule.schedule_service],
         **kwargs
     ):
         super().__init__(**kwargs)

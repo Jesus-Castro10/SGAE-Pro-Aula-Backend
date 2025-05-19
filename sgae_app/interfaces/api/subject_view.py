@@ -14,7 +14,7 @@ from sgae_app.domain.exceptions.exceptions import InvalidDataException
 class SubjectView(APIView):
     def __init__(
         self,
-        subject_service: SubjectService = Provide[Container.subject_service],
+        subject_service: SubjectService = Provide[Container.subject.subject_service],
         **kwargs
     ):
         super().__init__(**kwargs)

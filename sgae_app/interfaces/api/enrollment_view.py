@@ -14,7 +14,7 @@ from sgae_app.domain.exceptions.exceptions import InvalidDataException
 class EnrollmentView(APIView):
     def __init__(
         self,
-        enrollment_service: EnrollmentService = Provide[Container.enrollment_service],
+        enrollment_service: EnrollmentService = Provide[Container.enrollment.enrollment_service],
         **kwargs
     ):
         super().__init__(**kwargs)

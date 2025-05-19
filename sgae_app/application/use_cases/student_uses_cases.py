@@ -10,9 +10,9 @@ from sgae_app.infrastructure.models.guardian import GuardianModel
 from sgae_app.domain.utils.mapping import mapper
 
 class CreateStudent:
-    def __init__(self, repository: StudentRepository, email_sender_service):
+    def __init__(self, repository: StudentRepository):
         self.repository = repository
-        self.notifier = UserRegistrationNotifier(email_sender_service)
+        #self.notifier = UserRegistrationNotifier(email_sender_service)
 
     def _exists(self, student: Student) -> None:
         if self.repository.get_by_id_card(student.id_card):

@@ -13,7 +13,7 @@ from rest_framework import status
 class DirectorView(APIView):
     def __init__(
         self,
-        director_service: DirectorService = Provide[Container.director_service],
+        director_service: DirectorService = Provide[Container.director.director_service],
         **kwargs
     ):
         super().__init__(**kwargs)

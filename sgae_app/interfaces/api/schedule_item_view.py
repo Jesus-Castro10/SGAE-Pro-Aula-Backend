@@ -14,7 +14,7 @@ from sgae_app.interfaces.dtos.schedule_item_dto import ScheduleItemDTO
 class ScheduleItemView(APIView):
     def __init__(
         self,
-        schedule_item_service: ScheduleItemService = Provide[Container.schedule_item_service],
+        schedule_item_service: ScheduleItemService = Provide[Container.schedule_item.schedule_item_service],
         **kwargs
     ):
         super().__init__(**kwargs)

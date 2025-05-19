@@ -14,12 +14,11 @@ import logging
 logger = logging.getLogger(__name__)
 class GuardianView(APIView):
     def __init__(self, 
-                 guardian_service : GuardianService = None,
+                 guardian_service : GuardianService = Provide[Container.guardian.guardian_service],
                  **kwargs):
         super().__init__(**kwargs)
+        self.guardian_service = guardian_service
         
-        self.guardian_service = guardian_service or Container().guardian_service()
-
     def post(self, request):
         data = GuardianDTO(data=request.data)
         if not data.is_valid():

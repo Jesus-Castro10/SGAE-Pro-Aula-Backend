@@ -14,7 +14,7 @@ from sgae_app.interfaces.dtos.classroom_dto import ClassroomDTO
 class ClassroomView(APIView):
     def __init__(
         self,
-        classroom_service: ClassRoomService = Provide[Container.classroom_service],
+        classroom_service: ClassRoomService = Provide[Container.classroom.classroom_service],
         **kwargs
     ):
         super().__init__(**kwargs)
