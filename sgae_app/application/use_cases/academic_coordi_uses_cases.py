@@ -1,4 +1,4 @@
-from sgae_app.domain.exceptions.exceptions import ResourceNotFoundException, UserAlreadyExistsException
+from sgae_app.domain.exceptions.exceptions import ResourceNotFoundException, UserAlreadyExistsException, DuplicateKeyException
 from sgae_app.domain.repositories.academic_coordinator_repo import AcademicCoordinatorRepository
 from sgae_app.domain.entities.academic_coordinator import AcademicCoordinator
 from auth_app.models import User
@@ -17,7 +17,11 @@ class CreateAcademicCoordinator:
 
     def execute(self, academic_coordinator: AcademicCoordinator) -> AcademicCoordinator:
         self._exists(academic_coordinator)
-        return self.repository.save(academic_coordinator)
+        try:
+            return self.repository.save(academic_coordinator)
+        except Exception as e:
+            academic_coordinator.user.delete()
+            raise DuplicateKeyException(f"Error creating academic creator. {str(e)}")  
 
     
     

@@ -1,10 +1,13 @@
-from sgae_app.domain.entities.guardian import Guardian
-from sgae_app.domain.repositories.guardian_repository import GuardianRepository
 from auth_app.models import User
-
-from sgae_app.domain.exceptions.exceptions import (DuplicateKeyException,
-    ResourceNotFoundException, UserAlreadyExistsException)
+from sgae_app.domain.entities.guardian import Guardian
+from sgae_app.domain.exceptions.exceptions import (
+    DuplicateKeyException,
+    ResourceNotFoundException,
+    UserAlreadyExistsException,
+)
+from sgae_app.domain.repositories.guardian_repository import GuardianRepository
 from sgae_app.domain.utils.mapping import person_mapper
+
 
 class CreateGuardian:
     def __init__(self, repository: GuardianRepository):
@@ -20,7 +23,11 @@ class CreateGuardian:
         
     def execute(self, guardian: Guardian) -> Guardian:
         self._exists(guardian)
-        return self.repository.save(guardian)
+        try:
+            return self.repository.save(guardian)
+        except DuplicateKeyException as e:
+            guardian.user.delete()
+            raise DuplicateKeyException(f"Error saving guardian: {str(e)}")
 
 class GetGuardian:
     def __init__(self, repository: GuardianRepository):

@@ -14,11 +14,7 @@ class TeacherContainer(containers.DeclarativeContainer):
 
     teacher_repository = providers.Callable(DjangoTeacherRepository)
 
-    create_teacher_use_case = providers.Factory(
-        CreateTeacher,
-        repository=teacher_repository,
-        user_notifier=email_sender_container.user_notifier,
-    )
+    create_teacher_use_case = providers.Factory(CreateTeacher,repository=teacher_repository)
     update_teacher_use_case = providers.Factory(UpdateTeacher, repository=teacher_repository)
     delete_teacher_use_case = providers.Factory(DeleteTeacher, repository=teacher_repository)
     get_teacher_use_case = providers.Factory(GetTeacher, repository=teacher_repository)
@@ -32,4 +28,5 @@ class TeacherContainer(containers.DeclarativeContainer):
         get_teacher_uc=get_teacher_use_case,
         get_all_teachers_uc=get_all_teachers_use_case,
         user_creator=user_creator_container.user_creator_service,
+        user_notifier=email_sender_container.user_notifier,
     )

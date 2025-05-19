@@ -6,9 +6,12 @@ from sgae_app.application.use_cases.secretary_uses_cases import (
 )
 from sgae_app.application.services.secretary_service import SecretaryService
 from sgae_app.infrastructure.config.containers.user_creator_container import UserCreatorContainer
+from sgae_app.infrastructure.config.containers.email_container import EmailContainer
+
 
 class SecretaryContainer(containers.DeclarativeContainer):
     user_creator_container = providers.Container(UserCreatorContainer)
+    email_sender_container = providers.Container(EmailContainer)
 
     secretary_repository = providers.Callable(DjangoSecretaryRepository)
 
@@ -26,4 +29,5 @@ class SecretaryContainer(containers.DeclarativeContainer):
         get_secretary_uc=get_secretary_use_case,
         get_all_secretaries_uc=get_all_secretaries_use_case,
         user_creator=user_creator_container.user_creator_service,
+        user_notifier=email_sender_container.user_notifier,
     )

@@ -1,8 +1,7 @@
 from dependency_injector import containers, providers
 
-from sgae_app.application.services.email_sender_service import EmailSenderService
-from sgae_app.application.services.user_registration_notifier import UserRegistrationNotifier
+from sgae_app.infrastructure.services.email_user_notifier import EmailUserNotifier
+from sgae_app.interfaces.external.user_notifier_interface import UserNotifierInterface  # opcional, solo para claridad
 
 class EmailContainer(containers.DeclarativeContainer):
-    email_sender_service = providers.Singleton(EmailSenderService)
-    user_notifier = providers.Factory(UserRegistrationNotifier, email_sender_service=email_sender_service)
+    user_notifier = providers.Singleton(EmailUserNotifier)

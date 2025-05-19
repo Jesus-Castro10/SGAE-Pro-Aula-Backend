@@ -8,7 +8,7 @@ class DjangoTeacherRepository(TeacherRepository):
     def save(self, teacher: Teacher) -> Teacher:
         model = TeacherModel.from_domain(teacher)
         model.save()
-        return teacher
+        return model.to_domain()
 
     def get_by_id(self, teacher_id: int) -> Any | None:
         try:

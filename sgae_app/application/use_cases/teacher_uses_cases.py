@@ -1,4 +1,4 @@
-from sgae_app.domain.exceptions.exceptions import ResourceNotFoundException
+from sgae_app.domain.exceptions.exceptions import ResourceNotFoundException, DuplicateKeyException
 from sgae_app.domain.repositories.teacher_repository import TeacherRepository
 from sgae_app.domain.entities.teacher import Teacher
 from auth_app.models import User
@@ -8,10 +8,14 @@ class CreateTeacher:
     def __init__(self, repository: TeacherRepository):
         self.repository = repository
 
-    def execute(self, teacher: Teacher) -> Teacher:
+    def execute(self, teacher: Teacher) -> Teacher | None:
         if self.repository.exists(teacher.email):
             raise ResourceNotFoundException(f"Teacher with email {teacher.email} already exists.")
-        return self.repository.save(teacher)
+        try:
+            return self.repository.save(teacher)
+        except Exception as e:
+            teacher.user.delete()
+            raise DuplicateKeyException(f"Error creating teacher: {str(e)}")
 
 
 class GetTeacher:

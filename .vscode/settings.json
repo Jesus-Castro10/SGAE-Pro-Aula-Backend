@@ -1,0 +1,17 @@
+{
+  "python.defaultInterpreterPath": "/home/jesus-castro/Documentos/Ing Sistemas/SGAE/.venv/bin/python",
+  "python.languageServer": "Pylance",
+  "python.analysis.autoImportCompletions": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit"
+  },
+  "python.sortImports.args": ["--profile", "black"],
+  "python.analysis.exclude": [
+    "**/migrations",
+    "**/__pycache__"
+  ],
+  "files.exclude": {
+    "**/__pycache__": true,
+    "**/*.pyc": true
+  }
+}

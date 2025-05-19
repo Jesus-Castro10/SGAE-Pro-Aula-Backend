@@ -1,8 +1,12 @@
-from sgae_app.domain.exceptions.exceptions import ResourceNotFoundException, UserAlreadyExistsException
-from sgae_app.domain.repositories.secretary_repository import SecretaryRepository
-from sgae_app.domain.entities.secretary import Secretary
 from auth_app.models import User
+from sgae_app.domain.entities.secretary import Secretary
+from sgae_app.domain.exceptions.exceptions import (
+    ResourceNotFoundException,
+    UserAlreadyExistsException,
+)
+from sgae_app.domain.repositories.secretary_repository import SecretaryRepository
 from sgae_app.domain.utils.mapping import person_mapper
+
 
 class CreateSecretary:
     def __init__(self, repository: SecretaryRepository):
@@ -17,8 +21,11 @@ class CreateSecretary:
         
     def execute(self, secretary: Secretary) -> Secretary:
         self._exists(secretary)
-        return self.repository.save(secretary)
-
+        try:
+            return self.repository.save(secretary)
+        except Exception as e:
+            secretary.user.delete()
+            raise ResourceNotFoundException(f"Error saving secretary: {str(e)}")
 
 class GetSecretary:
     def __init__(self, repository: SecretaryRepository):

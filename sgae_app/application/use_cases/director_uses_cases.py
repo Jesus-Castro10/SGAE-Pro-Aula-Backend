@@ -1,8 +1,13 @@
-from sgae_app.domain.exceptions.exceptions import UserAlreadyExistsException, ResourceNotFoundException
-from sgae_app.domain.repositories.director_repository import DirectorRepository
-from sgae_app.domain.entities.director import Director
 from auth_app.models import User
+from sgae_app.domain.entities.director import Director
+from sgae_app.domain.exceptions.exceptions import (
+    DuplicateKeyException,
+    ResourceNotFoundException,
+    UserAlreadyExistsException,
+)
+from sgae_app.domain.repositories.director_repository import DirectorRepository
 from sgae_app.domain.utils.mapping import person_mapper
+
 
 class CreateDirector:
     def __init__(self, repository: DirectorRepository):
@@ -17,8 +22,11 @@ class CreateDirector:
         
     def execute(self, director: Director) -> Director:
         self._exists(director)
-        return self.repository.save(director)
-
+        try:
+            return self.repository.save(director)
+        except Exception as e:
+            director.user.delete()
+            raise DuplicateKeyException(f"Error saving director: {str(e)}") 
 
 class GetDirector:
     def __init__(self, repository: DirectorRepository):

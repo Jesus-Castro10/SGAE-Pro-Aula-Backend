@@ -6,9 +6,12 @@ from sgae_app.application.use_cases.director_uses_cases import (
 )
 from sgae_app.application.services.director_service import DirectorService
 from sgae_app.infrastructure.config.containers.user_creator_container import UserCreatorContainer
+from sgae_app.infrastructure.config.containers.email_container import EmailContainer
 
 class DirectorContainer(containers.DeclarativeContainer):
     user_creator_container = providers.Container(UserCreatorContainer)
+    email_sender_container = providers.Container(EmailContainer)
+
 
     director_repository = providers.Callable(DjangoDirectorRepository)
 
@@ -26,4 +29,5 @@ class DirectorContainer(containers.DeclarativeContainer):
         get_director_uc=get_director_use_case,
         get_all_directors_uc=get_all_directors_use_case,
         user_creator=user_creator_container.user_creator_service,
+        user_notifier=email_sender_container.user_notifier,
     )

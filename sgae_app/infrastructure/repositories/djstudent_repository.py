@@ -9,7 +9,6 @@ class DjangoStudentRepository(StudentRepository):
     def get_by_id(self, student_id: int) -> Optional[Student]:
         try:
             model = StudentModel.objects.select_related("enrollment").get(id=student_id)
-            print(f"StudentModel: {model}")
             return model.to_domain()
         except StudentModel.DoesNotExist:
             return None
@@ -28,7 +27,6 @@ class DjangoStudentRepository(StudentRepository):
 
     def save(self, student: Student) -> Student:
         model = StudentModel.from_domain(student)
-        model.guardian = GuardianModel.objects.get(id=student.guardian.id)
         model.save()
         return model.to_domain()
 

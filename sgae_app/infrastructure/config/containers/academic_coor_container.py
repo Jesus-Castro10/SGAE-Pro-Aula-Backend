@@ -7,8 +7,10 @@ from sgae_app.application.use_cases.academic_coordi_uses_cases import (
 )
 from sgae_app.application.services.academic_coordi_service import AcademicCoordinatorService
 from sgae_app.infrastructure.config.containers.user_creator_container import UserCreatorContainer
+from sgae_app.infrastructure.config.containers.email_container import EmailContainer
 
 class AcademicCoordinatorContainer(containers.DeclarativeContainer):
+    email_sender_container = providers.Container(EmailContainer)
     user_creator_container = providers.Container(UserCreatorContainer)
 
     academic_coordinator_repository = providers.Callable(DjangoAcademicCoordinatorRepository)
@@ -27,4 +29,5 @@ class AcademicCoordinatorContainer(containers.DeclarativeContainer):
         get_academic_coordinator_uc=get_academic_coordinator_use_case,
         get_all_academic_coordinators_uc=get_all_academic_coordinators_use_case,
         user_creator=user_creator_container.user_creator_service,
+        user_notifier=email_sender_container.user_notifier,
     )

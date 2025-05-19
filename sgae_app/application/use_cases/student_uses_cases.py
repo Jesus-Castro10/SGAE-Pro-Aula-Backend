@@ -1,18 +1,19 @@
+from auth_app.models import User
 from sgae_app.domain.entities.guardian import Guardian
 from sgae_app.domain.entities.student import Student
+from sgae_app.domain.exceptions.exceptions import (
+    DuplicateKeyException,
+    ResourceNotFoundException,
+    UserAlreadyExistsException,
+)
 from sgae_app.domain.repositories.student_repository import StudentRepository
-from auth_app.models import User
-
-from sgae_app.domain.exceptions.exceptions import (DuplicateKeyException,
-    ResourceNotFoundException, UserAlreadyExistsException)
+from sgae_app.domain.utils.mapping import mapper
 from sgae_app.infrastructure.models.guardian import GuardianModel
 
-from sgae_app.domain.utils.mapping import mapper
 
 class CreateStudent:
     def __init__(self, repository: StudentRepository):
         self.repository = repository
-        #self.notifier = UserRegistrationNotifier(email_sender_service)
 
     def _exists(self, student: Student) -> None:
         if self.repository.get_by_id_card(student.id_card):
@@ -23,7 +24,11 @@ class CreateStudent:
         
     def execute(self,student: Student) -> Student:
         self._exists(student)
-        return self.repository.save(student)
+        try:
+            return self.repository.save(student)
+        except DuplicateKeyException as e:
+            student.user.delete()
+            raise DuplicateKeyException(f"Error saving student: {str(e)}")
 
 class GetStudent:
     def __init__(self, repository: StudentRepository):
