@@ -16,6 +16,7 @@ class TeacherService:
         self.delete_teacher_uc = delete_teacher_uc
         self.get_teacher_uc = get_teacher_uc
         self.get_all_teachers_uc = get_all_teachers_uc
+        self.user_creator = user_creator
 
     def create_teacher(self, teacher: Teacher):
         teacher.user = self.user_creator.create_user(teacher.email, teacher.id_card, 'teacher')
