@@ -16,9 +16,9 @@ from sgae_app.application.services.schedule_service import ScheduleService
 from sgae_app.application.services.user_creator_service import UserCreatorService
 
 from sgae_app.infrastructure.repositories.djacademic_coordi_repo import DjangoAcademicCoordinatorRepository
+
 from sgae_app.infrastructure.repositories.djdirector_repository import DjangoDirectorRepository
 from sgae_app.infrastructure.repositories.djsecretary_repository import DjangoSecretaryRepository
-from sgae_app.infrastructure.repositories.djguardian_repository import DjangoGuardianRepository
 from sgae_app.infrastructure.repositories.djstudent_repository import DjangoStudentRepository
 from sgae_app.infrastructure.repositories.djteacher_repository import DjangoTeacherRepository
 from sgae_app.infrastructure.repositories.djsubject_repository import DjangoSubjectRepository
@@ -294,4 +294,28 @@ class Container(containers.DeclarativeContainer):
         delete_schedule_item_uc=delete_schedule_item_use_case,
         get_schedule_item_uc=get_schedule_item_use_case,
         get_all_schedule_items_uc=get_all_schedule_items_use_case,
+    )
+
+    # Teacher dependencies
+    teacher_repository = providers.Callable(DjangoTeacherRepository)
+    email_sender_service = providers.Singleton(
+        lambda: __import__('sgae_app.application.services.email_sender_service', fromlist=['EmailSenderService']).EmailSenderService()
+    )
+    create_teacher_use_case = providers.Factory(
+        CreateTeacher,
+        repository=teacher_repository,
+        email_sender_service=email_sender_service
+    )
+    update_teacher_use_case = providers.Factory(UpdateTeacher, repository=teacher_repository)
+    delete_teacher_use_case = providers.Factory(DeleteTeacher, repository=teacher_repository)
+    get_teacher_use_case = providers.Factory(GetTeacher, repository=teacher_repository)
+    get_all_teachers_use_case = providers.Factory(GetAllTeachers, repository=teacher_repository)
+
+    teacher_service = providers.Factory(
+        TeacherService,
+        create_teacher_uc=create_teacher_use_case,
+        update_teacher_uc=update_teacher_use_case,
+        delete_teacher_uc=delete_teacher_use_case,
+        get_teacher_uc=get_teacher_use_case,
+        get_all_teachers_uc=get_all_teachers_use_case,
     )

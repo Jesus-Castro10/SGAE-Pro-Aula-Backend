@@ -7,8 +7,9 @@ from sgae_app.domain.exceptions.exceptions import (DuplicateKeyException,
 from sgae_app.domain.utils.mapping import person_mapper
 
 class CreateGuardian:
-    def __init__(self, repository: GuardianRepository):
+    def __init__(self, repository: GuardianRepository, email_sender_service: EmailSenderService):
         self.repository = repository
+        self.notifier = UserRegistrationNotifier(email_sender_service)
 
     def _exists(self, guardian: Guardian) -> None:
         if self.repository.get_by_id_card(guardian.id_card):
