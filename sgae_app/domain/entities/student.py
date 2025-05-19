@@ -8,7 +8,6 @@ from django.contrib.auth.models import User
 class Student(Person):
     def __init__(
         self,
-        id: int,
         id_card: str,
         first_name: str,
         second_name: str,
@@ -19,8 +18,9 @@ class Student(Person):
         address: str,
         phone: str,
         email: str,
-        user: User,
-        image: str,
+        user: Optional[User] = None,
+        image: Optional[str] = None,
+        id: Optional[int] = None,
         guardian: Optional["Guardian"] = None,
         enrollment: Optional["Enrollment"] = None,
         grades: Optional[List["Grade"]] = None
@@ -32,7 +32,7 @@ class Student(Person):
         self.grades = grades or []
 
     def __str__(self):
-        return f"{super().__str__()} - Usuario: {self.user.username} - Responsable: {self.guardian.get_full_name() if self.guardian else 'N/A'}"
+        return super().__str__() + f", guardian: {self.guardian}, enrollment: {self.enrollment}, grades: {self.grades}"
 
     def average_grade(self):
         if not self.grades:

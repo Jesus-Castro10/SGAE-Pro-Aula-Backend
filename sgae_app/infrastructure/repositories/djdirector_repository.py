@@ -8,17 +8,28 @@ class DjangoDirectorRepository(DirectorRepository):
     def save(self, director: Director) -> Director:
         model = DirectorModel.from_domain(director)
         model.save()
-        return director
+        return model.to_domain()
 
-    def get_by_id(self, director_id: int) -> Any | None:
+    def get_by_id(self, director_id: int) -> Director | None:
         try:
             model = DirectorModel.objects.get(id=director_id)
             return model.to_domain()
         except DirectorModel.DoesNotExist:
             return None
 
-    def exists(self, email: str) -> bool:
-        return DirectorModel.objects.filter(email=email).exists()
+    def get_by_email(self, email: str) -> Director | None:
+        try:
+            model = DirectorModel.objects.get(email=email)
+            return model.to_domain()
+        except DirectorModel.DoesNotExist:
+            return None
+        
+    def get_by_id_card(self, id_card: str) -> Director | None:
+        try:
+            model = DirectorModel.objects.get(id_card=id_card)
+            return model.to_domain()
+        except DirectorModel.DoesNotExist:
+            return None
 
     def delete(self, director_id: int) -> None:
         director = DirectorModel.objects.get(id=director_id)

@@ -2,13 +2,14 @@ from typing import List, Optional
 from sgae_app.domain.entities.student import Student
 from sgae_app.domain.repositories.student_repository import StudentRepository
 from sgae_app.infrastructure.models.student import StudentModel
-
+from sgae_app.infrastructure.models.guardian import GuardianModel
 
 class DjangoStudentRepository(StudentRepository):
 
     def get_by_id(self, student_id: int) -> Optional[Student]:
         try:
             model = StudentModel.objects.select_related("enrollment").get(id=student_id)
+            print(f"StudentModel: {model}")
             return model.to_domain()
         except StudentModel.DoesNotExist:
             return None
@@ -27,15 +28,9 @@ class DjangoStudentRepository(StudentRepository):
 
     def save(self, student: Student) -> Student:
         model = StudentModel.from_domain(student)
+        model.guardian = GuardianModel.objects.get(id=student.guardian.id)
         model.save()
         return model.to_domain()
-
-    def exists(self, student: Student) -> bool:
-        return StudentModel.objects.filter(
-            id_card=student.id_card
-        ).exists() or StudentModel.objects.filter(
-            email=student.email
-        ).exists()
 
     def delete(self, student_id: int) -> None:
         student = StudentModel.objects.get(id=student_id)

@@ -8,9 +8,15 @@ class CreateDirector:
     def __init__(self, repository: DirectorRepository):
         self.repository = repository
 
+    def _exists(self, director: Director) -> None:
+        if self.repository.get_by_id_card(director.id_card):
+            director.user.delete()
+            raise UserAlreadyExistsException(
+                f"Director with id card {director.id_card} already exists."
+            )
+        
     def execute(self, director: Director) -> Director:
-        if self.repository.exists(director.email):
-            raise UserAlreadyExistsException(f"Director with email {director.email} already exists.")
+        self._exists(director)
         return self.repository.save(director)
 
 

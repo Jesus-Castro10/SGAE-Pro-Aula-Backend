@@ -8,7 +8,7 @@ class DjangoSecretaryRepository(SecretaryRepository):
     def save(self, secretary: Secretary) -> Secretary:
         model = SecretaryModel.from_domain(secretary)
         model.save()
-        return secretary
+        return model.to_domain()
 
     def get_by_id(self, secretary_id: int) -> Any | None:
         try:
@@ -17,8 +17,19 @@ class DjangoSecretaryRepository(SecretaryRepository):
         except SecretaryModel.DoesNotExist:
             return None
 
-    def exists(self, email: str) -> bool:
-        return SecretaryModel.objects.filter(email=email).exists()
+    def get_by_email(self, email: str) -> Secretary | None:
+        try:
+            model = SecretaryModel.objects.get(email=email)
+            return model.to_domain()
+        except SecretaryModel.DoesNotExist:
+            return None
+        
+    def get_by_id_card(self, id_card: str) -> Secretary | None:
+        try:
+            model = SecretaryModel.objects.get(id_card=id_card)
+            return model.to_domain()
+        except SecretaryModel.DoesNotExist:
+            return None
 
     def delete(self, secretary_id: int) -> None:
         secretary = SecretaryModel.objects.get(id=secretary_id)

@@ -16,6 +16,7 @@ class StudentService:
         self.delete_student_uc = delete_student_uc
         self.get_student_uc = get_student_uc
         self.get_all_students_uc = get_all_students_uc
+        self.user_creator = user_creator
 
     def create_student(self, student: Student):
         student.user = self.user_creator.create_user(student.email, student.id_card, 'student')

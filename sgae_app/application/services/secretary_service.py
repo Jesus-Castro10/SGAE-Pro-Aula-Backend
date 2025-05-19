@@ -21,6 +21,7 @@ class SecretaryService:
         self.delete_secretary_uc = delete_secretary_uc
         self.get_secretary_uc = get_secretary_uc
         self.get_all_secretaries_uc = get_all_secretaries_uc
+        self.user_creator = user_creator
 
     def create_secretary(self, secretary: Secretary):
         secretary.user = self.user_creator.create_user(secretary.email, secretary.id_card, 'secretary')

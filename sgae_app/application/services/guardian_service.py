@@ -20,6 +20,7 @@ class GuardianService:
         self.delete_guardian_uc = delete_guardian_uc
         self.get_guardian_uc = get_guardian_uc
         self.get_all_guardians_uc = get_all_guardians_uc
+        self.user_creator = user_creator
 
     def create_guardian(self, guardian: Guardian):
         guardian.user = self.user_creator.create_user(guardian.email, guardian.id_card, 'guardian')

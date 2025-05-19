@@ -16,9 +16,6 @@ class StudentRepository:
     def save(self, student: Student) -> Student:
         raise NotImplementedError
 
-    def exists(self, student: Student) -> bool:
-        raise NotImplementedError
-
     def delete(self, student_id: int) -> None:
         raise NotImplementedError
     

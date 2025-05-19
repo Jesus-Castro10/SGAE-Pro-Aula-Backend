@@ -16,8 +16,5 @@ class GuardianRepository:
     def save(self, guardian: Guardian) -> Guardian:
         raise NotImplementedError
 
-    def exists(self, guardian: Guardian) -> bool:
-        raise NotImplementedError
-
     def delete(self, guardian_id: int) -> None:
         raise NotImplementedError

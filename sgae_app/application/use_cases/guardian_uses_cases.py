@@ -10,12 +10,15 @@ class CreateGuardian:
     def __init__(self, repository: GuardianRepository):
         self.repository = repository
 
-    def execute(
-        self,
-        guardian: Guardian
-    ) -> Guardian:
-        if self.repository.exists(guardian):
-            raise UserAlreadyExistsException(f"Guardian already exists check the id card or email.")
+    def _exists(self, guardian: Guardian) -> None:
+        if self.repository.get_by_id_card(guardian.id_card):
+            guardian.user.delete()
+            raise UserAlreadyExistsException(
+                f"Guardian with id card {guardian.id_card} already exists."
+            )
+        
+    def execute(self, guardian: Guardian) -> Guardian:
+        self._exists(guardian)
         return self.repository.save(guardian)
 
 class GetGuardian:

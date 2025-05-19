@@ -13,12 +13,15 @@ class CreateStudent:
     def __init__(self, repository: StudentRepository):
         self.repository = repository
 
-    def execute(
-        self,
-        student: Student
-    ) -> Student:
-        if self.repository.exists(student):
-            raise UserAlreadyExistsException(f"Student already exists check the id card or email.")
+    def _exists(self, student: Student) -> None:
+        if self.repository.get_by_id_card(student.id_card):
+            student.user.delete()
+            raise UserAlreadyExistsException(
+                f"Student with id card {student.id_card} already exists."
+            )
+        
+    def execute(self,student: Student) -> Student:
+        self._exists(student)
         return self.repository.save(student)
 
 class GetStudent:

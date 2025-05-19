@@ -31,13 +31,6 @@ class DjangoGuardianRepository(GuardianRepository):
         model.save()
         return model.to_domain()
 
-    def exists(self, guardian: Guardian) -> bool:
-        return GuardianModel.objects.filter(
-            id_card=guardian.id_card
-        ).exists() or GuardianModel.objects.filter(
-            email=guardian.email
-        ).exists()
-
     def delete(self, guardian_id: int) -> None:
         guardian = GuardianModel.objects.get(id=guardian_id)
         guardian.user.delete()

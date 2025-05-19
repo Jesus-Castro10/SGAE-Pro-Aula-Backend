@@ -8,9 +8,15 @@ class CreateSecretary:
     def __init__(self, repository: SecretaryRepository):
         self.repository = repository
 
+    def _exists(self, secretary: Secretary) -> None:
+        if self.repository.get_by_id_card(secretary.id_card):
+            secretary.user.delete()
+            raise UserAlreadyExistsException(
+                f"Secretary with id card {secretary.id_card} already exists."
+            )
+        
     def execute(self, secretary: Secretary) -> Secretary:
-        if self.repository.exists(secretary.email):
-            raise UserAlreadyExistsException(f"Secretary with email {secretary.email} already exists.")
+        self._exists(secretary)
         return self.repository.save(secretary)
 
 

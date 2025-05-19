@@ -21,7 +21,7 @@ class StudentModel(PersonModel):
         return super().__str__() + f", user: {self.user}, guardian: {self.guardian}"
 
     def to_domain(self):
-        return Student(**super().to_domain(), user=self.user, guardian=self.guardian, enrollment=self.enrollment)
+        return Student(**super().to_domain(), user=self.user, guardian=self.guardian, enrollment=getattr(self, "enrollment", None))
 
     @classmethod
     def from_domain(cls, student: Student):

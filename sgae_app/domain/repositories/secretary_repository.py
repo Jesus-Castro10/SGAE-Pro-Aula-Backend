@@ -17,5 +17,8 @@ class SecretaryRepository:
     def delete(self, secretary_id: int) -> None:
         raise NotImplementedError
 
-    def exists(self, email: str) -> bool:
+    def get_by_email(self, email: str) -> Secretary:
+        raise NotImplementedError
+    
+    def get_by_id_card(self, id_card: str) -> Secretary:
         raise NotImplementedError
