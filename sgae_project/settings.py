@@ -49,7 +49,8 @@ SIMPLE_JWT = {
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8100",
     "https://jesus-castro10-sgae-pro-aula-backend.onrender.com",
-    "https://sgae-pro-aula-frontend.vercel.app"
+    "https://sgae-pro-aula-frontend.vercel.app",
+    "https://4200-firebase-sgae-pro-aula-frontend-1747251038519.cluster-joak5ukfbnbyqspg4tewa33d24.cloudworkstations.dev"
 ]
 
 MIDDLEWARE = [
