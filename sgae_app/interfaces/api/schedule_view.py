@@ -29,16 +29,13 @@ class ScheduleView(APIView):
         schedule_saved = self.schedule_service.create(schedule)
         return Response(ScheduleDTO(schedule_saved).data, status=status.HTTP_201_CREATED)
 
-
-    def get(self, pk: int) -> Schedule:
-        raise NotImplementedError("Método 'get' no implementado.")
-
-    def get_all(self):
-        try:
-            schedules = self.schedule_repository.get_all()
-            return list(schedules)
-        except Exception as e:
-            return []
+    def get(self, request, pk=None):
+        if pk:
+            schedule = self.schedule_service.get(pk)
+            return Response(ScheduleDTO(schedule).data)
+        else:
+            schedules = self.schedule_service.get_all()
+            return Response(ScheduleDTO(schedules, many=True).data)
 
     def put(self, request, pk):
         data = ScheduleDTO(data=request.data)

@@ -1,7 +1,7 @@
 import datetime
 
 class Group:
-    def __init__(self, id: int = None, name: str = '', year: int = None, section: str = None, shift: str = None, schedule=None, registered_at: datetime = None):
+    def __init__(self, id: int = None, name: str = '', year: int = None, section: str = None, turn: str = None, schedule=None, registered_at: datetime = None):
         if not name:
             raise ValueError("El nombre del grupo no puede estar vacío.")
     
@@ -10,7 +10,7 @@ class Group:
         self.name = name
         self.year = year
         self.section = section
-        self.shift = shift
+        self.turn = turn
         self.schedule = schedule
         self.registered_at = registered_at
 
