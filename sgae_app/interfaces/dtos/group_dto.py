@@ -7,8 +7,9 @@ class GroupDTO(serializers.Serializer):
     year = serializers.CharField(max_length=10)
     section = serializers.CharField(max_length=255, required=False, allow_blank=True)
     shift = serializers.ChoiceField(choices=[
-        ( 'Mañana'),
-        ( 'Tarde'),
+        ('morning', 'Mañana'),
+        ('afternoon', 'Tarde'),
+        ('evening', 'Noche'),
     ])
     registered_at = serializers.DateTimeField()
     schedule = serializers.PrimaryKeyRelatedField(queryset=ScheduleModel.objects.all(), required=False, allow_null=True)
