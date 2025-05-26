@@ -38,7 +38,7 @@ class UpdateGroup:
         group_db = self.repository.get_by_id(group_id)
         if not group_db:
             raise ResourceNotFoundException("Group not found.")
-        group_mapper(group_db, update_data, fields=["name", "year","section","shift","registered_at"])
+        group_mapper(group_db, update_data, fields=["name", "year","section","turn","registered_at"])
         return self.repository.save(group_db)
 
 class DeleteGroup:
