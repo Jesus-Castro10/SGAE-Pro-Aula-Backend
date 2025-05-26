@@ -26,9 +26,7 @@ class GetAllSchedules:
 
     def execute(self):
         schedules = self.repository.get_all()
-        if not schedules:
-            raise ResourceNotFoundException("No schedules found.")
-        return schedules
+        return schedules # <-- Corrección aplicada aquí.
 
 class UpdateSchedule:
     def __init__(self, repository):
@@ -38,7 +36,7 @@ class UpdateSchedule:
         schedule_db = self.repository.get_by_id(schedule_id)
         if not schedule_db:
             raise ResourceNotFoundException("Schedule not found.")
-        schedule_mapper(schedule_db,update_data,['code','name'])
+        schedule_mapper(schedule_db, update_data, ['code', 'name'])
         return self.repository.save(schedule_db)
 
 class DeleteSchedule:
@@ -49,9 +47,3 @@ class DeleteSchedule:
         if not self.repository.get_by_id(schedule_id):
             raise ResourceNotFoundException("Schedule not found.")
         self.repository.delete(schedule_id)
-#class GetSchedulesByClassroom:
-#    def __init__(self, repository):
-#       self.repository = repository
-#
-#    def execute(self, classroom_id: int):
-#        return self.repository.get_by_classroom_id(classroom_id)
