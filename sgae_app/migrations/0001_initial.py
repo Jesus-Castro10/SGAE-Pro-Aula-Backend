@@ -123,7 +123,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=50, verbose_name='Nombre del grupo')),
                 ('year', models.IntegerField(verbose_name='Año')),
                 ('section', models.CharField(blank=True, max_length=10, null=True, verbose_name='Sección')),
-                ('turn', models.CharField(blank=True, max_length=10, null=True, verbose_name='Turno')),
+                ('shift', models.CharField(blank=True, max_length=10, null=True, verbose_name='Turno')),
                 ('registered_at', models.DateTimeField(auto_now_add=True, verbose_name='Fecha de registro')),
                 ('schedule', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='groups', to='sgae_app.schedulemodel', verbose_name='Horario')),
             ],

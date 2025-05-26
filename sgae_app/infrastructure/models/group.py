@@ -6,7 +6,7 @@ class GroupModel(models.Model):
     name = models.CharField(max_length=50, verbose_name='Nombre del grupo')
     year = models.IntegerField(verbose_name='Año')
     section = models.CharField(max_length=10, verbose_name='Sección', blank=True, null=True)
-    turn = models.CharField(max_length=10, verbose_name='Turno', blank=True, null=True)
+    shift = models.CharField(max_length=10, verbose_name='Turno', blank=True, null=True)
     registered_at = models.DateTimeField(auto_now_add=True, verbose_name='Fecha de registro')
     schedule = models.ForeignKey(
         'ScheduleModel',
@@ -25,7 +25,7 @@ class GroupModel(models.Model):
         return f"{self.name} - {self.year} {self.section}"
     
     def to_domain(self):
-        return Group(id=self.id, name=self.name, year=self.year, section=self.section, turn=self.shift, registered_at=self.registered_at, schedule=self.schedule)
+        return Group(id=self.id, name=self.name, year=self.year, section=self.section,shift=self.shift, registered_at=self.registered_at, schedule=self.schedule)
 
     @classmethod
     def from_domain(cls, subject):
