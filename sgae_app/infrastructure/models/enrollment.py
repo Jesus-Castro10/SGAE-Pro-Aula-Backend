@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils import timezone
 from sgae_app.domain.entities.enrollment import Enrollment
+from sgae_app.infrastructure.models.student import StudentModel
+from sgae_app.infrastructure.models.group import GroupModel
 
 class EnrollmentModel(models.Model):
     id = models.AutoField(
@@ -63,14 +65,29 @@ class EnrollmentModel(models.Model):
             observations=self.observations
         )
 
-    @classmethod
-    def from_domain(cls, enrollment: Enrollment):
-        return cls(
-            id=enrollment.id,
-            student=enrollment.student,
-            group=enrollment.group,
-            academic_year=enrollment.academic_year,
-            enrollment_date=enrollment.enrollment_date,
-            status=enrollment.status,
-            observations=enrollment.observations,
-        )
+@classmethod
+def from_domain(cls, enrollment: Enrollment):
+    student_instance = StudentModel.objects.get(id=enrollment.student)
+    group_instance = GroupModel.objects.get(id=enrollment.group)
+
+    if enrollment.id:
+        try:
+            model_instance = cls.objects.get(id=enrollment.id)
+            model_instance.student = student_instance
+            model_instance.group = group_instance
+            model_instance.academic_year = enrollment.academic_year
+            model_instance.enrollment_date = enrollment.enrollment_date
+            model_instance.status = enrollment.status
+            model_instance.observations = enrollment.observations
+            return model_instance
+        except cls.DoesNotExist:
+            pass
+    
+    return cls(
+        student=student_instance,
+        group=group_instance,
+        academic_year=enrollment.academic_year,
+        enrollment_date=enrollment.enrollment_date,
+        status=enrollment.status,
+        observations=enrollment.observations,
+    )
